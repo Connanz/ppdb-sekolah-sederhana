@@ -3,70 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPDB Sekolah - Student Admission</title>
+    <title>PPDB Sekolah</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Heroicons -->
+    <script src="https://unpkg.com/@heroicons/v2.0.18/24/outline/index.js"></script>
 </head>
 <body class="bg-gray-100">
-    <!-- Navbar -->
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <h1 class="text-xl font-bold">PPDB Sekolah</h1>
-                    </div>
-                    <div class="hidden md:ml-6 md:flex md:space-x-8">
-                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
-                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Registration</a>
-                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Status</a>
-                    </div>
+    <!-- Navigation -->
+    <nav class="bg-gray-800 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                    </svg>
+                    <span class="text-xl font-bold">Sekolah</span>
                 </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="hover:text-blue-400 transition-colors">Home</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Admissions</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Programs</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Kontak</a>
+                </div>
+                <button class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition-colors">
+                    Apply Now
+                </button>
             </div>
         </div>
     </nav>
 
-    <div class="flex">
-        <!-- Sidebar -->
-        <div class="w-64 bg-white shadow-md h-screen">
-            <div class="p-4">
-                <ul class="space-y-2">
-                    <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded">Dashboard</a></li>
-                    <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded">New Registration</a></li>
-                    <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded">Requirements</a></li>
-                    <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded">Schedule</a></li>
-                    <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-1 p-10">
-            <h2 class="text-2xl font-bold mb-4">Welcome to Student Admission 2024</h2>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-semibold mb-2">Announcements</h3>
-                <p class="text-gray-600 mb-4">Registration for the 2024 academic year is now open. Please ensure all required documents are prepared before starting your application.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="border p-4 rounded-lg">
-                        <h4 class="font-semibold mb-2">Important Dates</h4>
-                        <ul class="list-disc pl-4 text-gray-600">
-                            <li>Registration Opens: January 1, 2024</li>
-                            <li>Registration Closes: March 31, 2024</li>
-                            <li>Entrance Test: April 15, 2024</li>
-                            <li>Results: April 30, 2024</li>
-                        </ul>
-                    </div>
-                    <div class="border p-4 rounded-lg">
-                        <h4 class="font-semibold mb-2">Quick Links</h4>
-                        <ul class="list-disc pl-4 text-gray-600">
-                            <li><a href="#" class="text-blue-500 hover:underline">Registration Form</a></li>
-                            <li><a href="#" class="text-blue-500 hover:underline">Document Requirements</a></li>
-                            <li><a href="#" class="text-blue-500 hover:underline">FAQ</a></li>
-                            <li><a href="#" class="text-blue-500 hover:underline">Contact Support</a></li>
-                        </ul>
-                    </div>
+    <!-- Hero Section -->
+    <div class="relative bg-gray-900 text-white">
+        <div class="absolute inset-0 bg-opacity-90 bg-gray-900"></div>
+        <div class="container mx-auto px-4 py-24 relative">
+            <div class="max-w-3xl">
+                <h1 class="text-5xl font-bold mb-6">Begin Your Academic Journey</h1>
+                <p class="text-xl text-gray-300 mb-8">Join our community of innovators and leaders. Applications for Fall 2024 are now open.</p>
+                <div class="flex space-x-4">
+                    <button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg transition-colors">
+                        Apply Now
+                    </button>
+                    <button class="border border-gray-300 hover:bg-gray-800 px-8 py-4 rounded-lg text-lg transition-colors">
+                        Learn More
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Key Information Section -->
+    <div class="container mx-auto px-4 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <div class="text-blue-500 mb-4">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Application Deadlines</h3>
+                <p class="text-gray-600">Early Decision: November 15<br>Regular Decision: January 15</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <div class="text-blue-500 mb-4">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">200+ Programs</h3>
+                <p class="text-gray-600">Explore undergraduate and graduate programs across diverse disciplines</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <div class="text-blue-500 mb-4">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Admission Requirements</h3>
+                <p class="text-gray-600">View detailed requirements for domestic and international applicants</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Programs Section -->
+    <div class="bg-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Featured Programs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="md:flex">
+                        <div class="md:flex-shrink-0">
+                            <img class="h-48 w-full object-cover md:w-48" src="{{ url_for('static', filename='Software Engineering.png') }}" alt="Program">
+                        </div>
+                        <div class="p-8">
+                            <div class="uppercase text-sm text-blue-600 font-semibold">Engineering</div>
+                            <h3 class="text-xl font-bold mt-2 mb-4">Computer Science</h3>
+                            <p class="text-gray-600">Innovative program combining theory and practical applications in computing.</p>
+                            <button class="mt-4 text-blue-600 hover:text-blue-700 flex items-center">
+                                View Program
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Repeat similar structure for other programs -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contact</h4>
+                    <p class="mb-2">Admissions Office</p>
+                    <p class="mb-2">123 University Way</p>
+                    <p class="mb-2">Phone: (555) 123-4567</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition-colors">Application Status</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Financial Aid</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Campus Tours</a></li>
+                    </ul>
+                </div>
+                <!-- Add more footer columns as needed -->
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p>&copy; 2024 University Name. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
