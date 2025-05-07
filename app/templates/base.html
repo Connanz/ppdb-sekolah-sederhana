@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PPDB Sekolah{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@heroicons/v2.0.18/24/outline/index.js"></script>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                    </svg>
+                    <a href="{{ url_for('index_bp.index') }}" class="text-xl font-bold">Sekolah</a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="{{ url_for('index_bp.index') }}" class="hover:text-blue-400 transition-colors">Halaman Utama</a>
+                    <a href="{{ url_for('form.pendaftaran') }}" class="hover:text-blue-400 transition-colors">Pendaftaran</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Program</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Kontak</a>
+                    {% if current_user.is_authenticated %}
+                        <a href="#" class="hover:text-blue-400 transition-colors">Profil Siswa</a>
+                        <a href="#" class="hover:text-blue-400 transition-colors">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="hover:text-blue-400 transition-colors">Login</a>
+                    {% endif %}
+                </div>
+                {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.register') }}" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition-colors">
+                        Daftar Sekarang
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mx-auto px-4 mt-4">
+                {% for category, message in messages %}
+                    <div class="p-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %} mb-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-white font-bold mb-4">Kontak</h4>
+                    <p class="mb-2">Kantor Admisi</p>
+                    <p class="mb-2">Jl. Pendidikan No. 123</p>
+                    <p class="mb-2">Telp: (021) 123-4567</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Link Cepat</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('form.status') }}" class="hover:text-white transition-colors">Status Pendaftaran</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Informasi Biaya</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Jadwal Tour Sekolah</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p>&copy; Nama Sekolah. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
