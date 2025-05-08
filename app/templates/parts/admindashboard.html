@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Menunggu Verifikasi</h2>
+        
+        {% if forms %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usia</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asal Sekolah</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for form in forms %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ form.student_name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ form.student_age }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ form.school_name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <form action="{{ url_for('admin.verify_form', form_id=form.id) }}" method="POST" class="space-y-2">
+                                <textarea name="note" class="w-full p-2 border rounded" placeholder="Catatan verifikasi"></textarea>
+                                <div class="space-x-2">
+                                    <button type="submit" name="action" value="approve" 
+                                            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                        Setujui
+                                    </button>
+                                    <button type="submit" name="action" value="reject"
+                                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                        Tolak
+                                    </button>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-500">Tidak ada pendaftaran yang menunggu verifikasi.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

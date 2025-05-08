@@ -22,18 +22,19 @@
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="{{ url_for('index_bp.index') }}" class="hover:text-blue-400 transition-colors">Halaman Utama</a>
-                    <a href="{{ url_for('form.pendaftaran') }}" class="hover:text-blue-400 transition-colors">Pendaftaran</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Persyaratan</a>
+                    <a href="{{ url_for('form_bp.pendaftaran') }}" class="hover:text-blue-400 transition-colors">Pendaftaran</a>
                     <a href="#" class="hover:text-blue-400 transition-colors">Program</a>
                     <a href="#" class="hover:text-blue-400 transition-colors">Kontak</a>
                     {% if current_user.is_authenticated %}
                         <a href="#" class="hover:text-blue-400 transition-colors">Profil Siswa</a>
                         <a href="#" class="hover:text-blue-400 transition-colors">Logout</a>
                     {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="hover:text-blue-400 transition-colors">Login</a>
+                        <a href="{{ url_for('auth_bp.login') }}" class="hover:text-blue-400 transition-colors">Login</a>
                     {% endif %}
                 </div>
                 {% if not current_user.is_authenticated %}
-                    <a href="{{ url_for('auth.register') }}" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition-colors">
+                    <a href="{{ url_for('auth_bp.register') }}" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition-colors">
                         Daftar Sekarang
                     </a>
                 {% endif %}
@@ -61,20 +62,6 @@
     <footer class="bg-gray-800 text-gray-300">
         <div class="container mx-auto px-4 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h4 class="text-white font-bold mb-4">Kontak</h4>
-                    <p class="mb-2">Kantor Admisi</p>
-                    <p class="mb-2">Jl. Pendidikan No. 123</p>
-                    <p class="mb-2">Telp: (021) 123-4567</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4">Link Cepat</h4>
-                    <ul class="space-y-2">
-                        <li><a href="" class="hover:text-white transition-colors">Status Pendaftaran</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Informasi Biaya</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Jadwal Tour Sekolah</a></li>
-                    </ul>
-                </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center">
                 <p>&copy; Nama Sekolah. All rights reserved.</p>

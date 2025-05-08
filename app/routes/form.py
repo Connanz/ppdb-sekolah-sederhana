@@ -6,14 +6,13 @@ from app import db
 import os
 import uuid
 
-form_bp = Blueprint('form', __name__, template_folder='templates')
+form_bp = Blueprint('form_bp', __name__, template_folder='templates')
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
 @form_bp.route('/pendaftaran', methods=['GET', 'POST'])
-@login_required
 def pendaftaran():
     if request.method == 'POST':
         # Handle file upload first
@@ -40,7 +39,7 @@ def pendaftaran():
         # Validate all fields
         if not all([student_name, student_age, school_name]):
             flash('Semua field harus diisi!', 'error')
-            return redirect(url_for('form.pendaftaran'))
+            return redirect(url_for('form_bp.pendaftaran'))
 
         try:
             # Save the file
@@ -63,12 +62,12 @@ def pendaftaran():
             db.session.commit()
 
             flash('Pendaftaran berhasil disubmit!', 'success')
-            return redirect(url_for('form.status'))
+            return redirect(url_for('form_bp.status'))
 
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"Error during registration: {str(e)}")
             flash('Terjadi kesalahan saat mendaftar. Silakan coba lagi.', 'error')
-            return redirect(url_for('form.pendaftaran'))
+            return redirect(url_for('form_bp.pendaftaran'))
 
     return render_template('parts/form.html')

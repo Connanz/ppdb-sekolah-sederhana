@@ -1,80 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPDB Sekolah</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Logo dari Heroicons -->
-    <script src="https://unpkg.com/@heroicons/v2.0.18/24/outline/index.js"></script>
-</head>
-<body class="bg-gray-100">
-    <!-- Navigation -->
-    <nav class="bg-gray-800 text-white">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-2">
-                    <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
-                    </svg>
-                    <span class="text-xl font-bold">Sekolah</span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#" class="hover:text-blue-400 transition-colors">Halaman Utama</a>
-                    <a href="{{ url_for('form.pendaftaran') }}" class="hover:text-blue-400 transition-colors">Pendaftaran</a>
-                    <a href="#" class="hover:text-blue-400 transition-colors">Program</a>
-                    <a href="#" class="hover:text-blue-400 transition-colors">Kontak</a>
-                    <a href="#" class="hover:text-blue-400 transition-colors">Profil Siswa</a>
-
-                </div>
-                <button class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition-colors">
-                    Apply Now
-                </button>
-            </div>
-        </div>
-    </nav>
-
+{% extends "base.html" %}
+{% block content %}
+<!-- app/templates/index.html -->
     <!-- Hero Section -->
     <div class="relative bg-gray-900 text-white">
         <div class="absolute inset-0 bg-opacity-90 bg-gray-900"></div>
         <div class="container mx-auto px-4 py-24 relative">
             <div class="max-w-4xl">
                 <h1 class="text-5xl font-bold mb-6">Pendaftaran Siswa Baru</h1>
-                <p class="text-xl text-gray-300 mb-8">Follow these simple steps to begin your enrollment process:</p>
+                <p class="text-xl text-gray-300 mb-8">Ikuti langkah - langkah dibawah ini untuk melakukan pendaftaran :</p>
                 
                 <div class="mb-12 space-y-6">
                     <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <span class="text-white font-bold">1</span>
                         </div>
-                        <p class="text-lg">Create your student account using your email address</p>
+                        <p class="text-lg">Buat akun siswa melalui menu pendaftaran</p>
                     </div>
                     
                     <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <span class="text-white font-bold">2</span>
                         </div>
-                        <p class="text-lg">Complete the online registration form with your personal details</p>
+                        <p class="text-lg">Isi data diri dengan lengkap serta jelas</p>
                     </div>
                     
                     <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <span class="text-white font-bold">3</span>
                         </div>
-                        <p class="text-lg">Upload required documents and submit your application</p>
+                        <p class="text-lg">Upload foto maupun dokumen yang dibutuhkan lalu kirim</p>
                     </div>
                 </div>
     
                 <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-                    <button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg transition-colors flex items-center justify-center">
+                    <button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg transition-colors flex items-center justify-center" href="{{ url_for('form_bp.pendaftaran') }}">
                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                         </svg>
-                        Start Registration Now
+                        Mulai Pendaftaran 
                     </button>
                     <button class="border border-gray-300 hover:bg-gray-800 px-8 py-4 rounded-lg text-lg transition-colors">
-                        View Requirements
+                        Lihat persyaratan
                     </button>
                 </div>
     
@@ -83,7 +49,7 @@
                         <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <p class="text-sm">Registration deadline: August 15, 2024 | Need help? Contact admissions@university.edu</p>
+                        <p class="text-sm">Batas akhir pendaftaran: August 15, 2025 | butuh bantuan? segera kontak kami : admissions@sekolah.edu.my.id</p>
                     </div>
                 </div>
             </div>
@@ -99,8 +65,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Application Deadlines</h3>
-                <p class="text-gray-600">Early Decision: November 15<br>Regular Decision: January 15</p>
+                <h3 class="text-xl font-bold mb-2">Jadwal Terstruktur</h3>
+                <p class="text-gray-600">Memiliki jadwal yang jelas</p>
             </div>
 
             <!-- Card 2 -->
@@ -110,8 +76,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-2">200+ Programs</h3>
-                <p class="text-gray-600">Explore undergraduate and graduate programs across diverse disciplines</p>
+                <h3 class="text-xl font-bold mb-2">Ketersediaan Sumber Belajar</h3>
+                <p class="text-gray-600">Memiliki banyak buku dalam bentuk online maupun offline</p>
             </div>
 
             <!-- Card 3 -->
@@ -121,8 +87,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Admission Requirements</h3>
-                <p class="text-gray-600">View detailed requirements for domestic and international applicants</p>
+                <h3 class="text-xl font-bold mb-2">Akreditasi A</h3>
+                <p class="text-gray-600">Telah dievaluasi oleh berbagai lembaga pendidikan</p>
             </div>
         </div>
     </div>
@@ -130,7 +96,7 @@
     <!-- Featured Programs Section -->
     <div class="bg-gray-50 py-16">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Featured Programs</h2>
+            <h2 class="text-3xl font-bold text-center mb-12">Program Unggulan</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <div class="md:flex">
@@ -138,11 +104,11 @@
                             <img class="h-48 w-full object-cover md:w-48" src="{{ url_for('static', filename='Software Engineering.png') }}" alt="Program">
                         </div>
                         <div class="p-8">
-                            <div class="uppercase text-sm text-blue-600 font-semibold">Engineering</div>
-                            <h3 class="text-xl font-bold mt-2 mb-4">Computer Science</h3>
-                            <p class="text-gray-600">Innovative program combining theory and practical applications in computing.</p>
+                            <div class="uppercase text-sm text-blue-600 font-semibold">Program Unggulan 1</div>
+                            <h3 class="text-xl font-bold mt-2 mb-4">Jurusan Ilmu Komputer</h3>
+                            <p class="text-gray-600">Menggabungkan teori yang mendalam dengan praktik dalam pembuatan aplikasi.</p>
                             <button class="mt-4 text-blue-600 hover:text-blue-700 flex items-center">
-                                View Program
+                                Lihat Program
                                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                 </svg>
@@ -150,37 +116,13 @@
                         </div>
                     </div>
                 </div>
+
+
                 
                 
                 <!-- Repeat similar structure for other programs -->
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-300">
-        <div class="container mx-auto px-4 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h4 class="text-white font-bold mb-4">Contact</h4>
-                    <p class="mb-2">Admissions Office</p>
-                    <p class="mb-2">123 University Way</p>
-                    <p class="mb-2">Phone: (555) 123-4567</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition-colors">Application Status</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Financial Aid</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Campus Tours</a></li>
-                    </ul>
-                </div>
-                <!-- Add more footer columns as needed -->
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p>&copy; Nama Sekolah. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>
+{% endblock %}
+<!-- End of app/templates/index.html -->
