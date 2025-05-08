@@ -13,3 +13,5 @@ class Form(db.Model):
     student_name = db.Column(db.String(100), nullable=False)
     student_age = db.Column(db.Integer, nullable=False)
     school_name = db.Column(db.String(100), nullable=False)
+    image_path = db.Column(db.String(255), nullable=False)
+
