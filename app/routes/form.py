@@ -71,3 +71,9 @@ def pendaftaran():
             return redirect(url_for('form_bp.pendaftaran'))
 
     return render_template('parts/form.html')
+
+@form_bp.route('/dashboard')
+@login_required
+def student_dashboard():
+    user_forms = Form.query.filter_by(user_id=current_user.id).order_by(Form.id.desc()).all()
+    return render_template('student_dashboard.html', user_forms=user_forms)

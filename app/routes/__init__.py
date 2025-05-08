@@ -3,7 +3,6 @@ from .auth import auth_bp
 from .error import mod_error
 from .form import form_bp
 from .admin import admin_bp
-from .student import student_bp
 
 # Tempat untuk Registerasi semua route dari blueprint yang ada di dalam folder routes
 def register_blueprints(app):
@@ -12,4 +11,3 @@ def register_blueprints(app):
     app.register_blueprint(mod_error, url_prefix='/error')
     app.register_blueprint(form_bp, url_prefix='/form')
     app.register_blueprint(admin_bp, url_prefix='/admin')
-    app.register_blueprint(student_bp, url_prefix='/student')
