@@ -37,6 +37,10 @@ def create_app(config_class=Config):
     from .routes import register_blueprints
     register_blueprints(app)
 
+    # Register CLI commands
+    from .cli import create_admin
+    app.cli.add_command(create_admin)
+
     with app.app_context():
         from app import models # Harus mempunyai file models.py di folder app
 

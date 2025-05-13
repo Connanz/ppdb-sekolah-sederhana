@@ -311,3 +311,68 @@ def status():
 @form_bp.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+
+
+<!-- studentdashboard.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Student Dashboard</h1>
+        
+        <!-- New Registration Button -->
+        <div class="mb-8">
+            <a href="{{ url_for('form_bp.pendaftaran') }}" 
+               class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                + New Registration
+            </a>
+        </div>
+
+        <!-- Applications List -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for form in user_forms %}
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center mb-4">
+                    <img class="h-16 w-16 rounded-full object-cover mr-4"
+                         src="{{ url_for('static', filename='uploads/student_images/' + form.image_path) }}" 
+                         alt="Student photo">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">{{ form.student_name }}</h2>
+                        <p class="text-sm text-gray-500">{{ form.school_name }}</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Status:</span>
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            {% if form.status == 'verified' %}bg-green-100 text-green-800
+                            {% elif form.status == 'rejected' %}bg-red-100 text-red-800
+                            {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                            {{ form.status|upper }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Age:</span>
+                        <span class="text-gray-900">{{ form.student_age }}</span>
+                    </div>
+                    {% if form.verification_note %}
+                    <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                        <p class="text-sm text-gray-600">
+                            <span class="font-medium">Admin Note:</span> 
+                            {{ form.verification_note }}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="col-span-full text-center py-12">
+                <p class="text-gray-500">No registration submissions yet</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
