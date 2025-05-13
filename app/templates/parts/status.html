@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+        <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+            <div class="max-w-md mx-auto">
+                <h2 class="text-2xl font-bold mb-8 text-center">Status Pendaftaran</h2>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="p-4 mb-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Tambahkan Bagian Ini -->
+                <div class="text-center mb-6">
+                    <img src="{{ url_for('form_bp.uploaded_file', filename=submission.image_path) }}" 
+                         class="h-32 w-32 rounded-full object-cover mx-auto border-2 border-gray-200">
+                    <p class="mt-2 text-sm text-gray-500">Foto Profil</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Data lainnya tetap sama -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500">Nama Lengkap</label>
+                        <p class="mt-1 text-gray-900">{{ submission.student_name }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500">Umur</label>
+                        <p class="mt-1 text-gray-900">{{ submission.student_age }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500">Asal Sekolah</label>
+                        <p class="mt-1 text-gray-900">{{ submission.school_name }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500">Status Verifikasi</label>
+                        <p class="mt-1 {% if submission.is_verified %}text-green-600{% else %}text-yellow-600{% endif %}">
+                            {% if submission.is_verified %}
+                                ✅ Terverifikasi
+                            {% else %}
+                                Menunggu Verifikasi
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <a href="{{ url_for('form_bp.pendaftaran') }}" 
+                       class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        ↻ Perbarui Data Pendaftaran
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

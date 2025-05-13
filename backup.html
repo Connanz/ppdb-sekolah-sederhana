@@ -287,3 +287,27 @@ def status():
         </div>
     </div>
     {% endblock %}
+
+
+@form_bp.route('/status')
+@login_required  # Pastikan user sudah login
+def status():
+    # Ambil data terakhir yang di-submit oleh user
+    latest_submission = Form.query.filter_by(
+        user_id=current_user.id
+    ).order_by(Form.id.desc()).first()
+
+    if not latest_submission:
+        flash('Belum ada data pendaftaran', 'error')
+        return redirect(url_for('form_bp.pendaftaran'))
+
+    return render_template(
+        'parts/status.html',
+        submission=latest_submission,
+        # Jika perlu format tanggal:
+        # timestamp=latest_submission.timestamp.strftime("%d %B %Y %H:%M")
+    )
+
+@form_bp.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)

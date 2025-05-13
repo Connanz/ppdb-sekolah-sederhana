@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from app import db
 from enum import Enum
+from datetime import datetime, timezone
 
 class UserRole(Enum):
     STUDENT = 'student'
@@ -36,8 +37,8 @@ class User(UserMixin, db.Model):
     def get_dashboard(self):
         """Return the appropriate dashboard URL based on user role"""
         if self.is_admin():
-            return 'admin.dashboard'
-        return 'student.dashboard'
+            return 'admin_bp.dashboard'
+        return 'form_bp.student_dashboard'
 
 class Form(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,3 +51,5 @@ class Form(db.Model):
     verified_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     verification_date = db.Column(db.DateTime, nullable=True)
     verification_note = db.Column(db.Text, nullable=True)
+    is_verified = db.Column(db.Boolean, default=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)

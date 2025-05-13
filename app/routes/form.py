@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
 from app.models import Form
 from app import db
 import os
@@ -55,14 +56,11 @@ def pendaftaran():
                 student_name=student_name,
                 student_age=int(student_age),
                 school_name=school_name,
-                image_path=unique_filename  # Add image path
+                image_path=unique_filename
             )
 
             db.session.add(new_form)
             db.session.commit()
-
-            flash('Pendaftaran berhasil disubmit!', 'success')
-            return redirect(url_for('form_bp.status'))
 
         except Exception as e:
             db.session.rollback()
@@ -70,10 +68,37 @@ def pendaftaran():
             flash('Terjadi kesalahan saat mendaftar. Silakan coba lagi.', 'error')
             return redirect(url_for('form_bp.pendaftaran'))
 
+        else:
+            flash('Pendaftaran berhasil disubmit!', 'success')
+            return redirect(url_for('form_bp.status'))
+
     return render_template('parts/form.html')
 
-@form_bp.route('/dashboard')
+@form_bp.route('/status')
+@login_required  # Pastikan user sudah login
+def status():
+    # Ambil data terakhir yang di-submit oleh user
+    latest_submission = Form.query.filter_by(
+        user_id=current_user.id
+    ).order_by(Form.id.desc()).first()
+
+    if not latest_submission:
+        flash('Belum ada data pendaftaran', 'error')
+        return redirect(url_for('form_bp.pendaftaran'))
+
+    return render_template(
+        'parts/status.html',
+        submission=latest_submission,
+        # Jika perlu format tanggal:
+        # timestamp=latest_submission.timestamp.strftime("%d %B %Y %H:%M")
+    )
+
+@form_bp.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+
+@form_bp.route('/student/dashboard')
 @login_required
 def student_dashboard():
     user_forms = Form.query.filter_by(user_id=current_user.id).order_by(Form.id.desc()).all()
-    return render_template('student_dashboard.html', user_forms=user_forms)
+    return render_template('parts/studentdashboard.html', user_forms=user_forms)

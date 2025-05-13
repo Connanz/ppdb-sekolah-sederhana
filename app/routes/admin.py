@@ -5,7 +5,7 @@ from app import db
 from datetime import datetime
 from functools import wraps
 
-admin_bp = Blueprint('admin', __name__, template_folder='templates')
+admin_bp = Blueprint('admin_bp', __name__, template_folder='templates')
 
 def admin_required(f):
     @wraps(f)
@@ -16,7 +16,7 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@admin_bp.route('/dashboard')
+@admin_bp.route('admin/dashboard')
 @login_required
 @admin_required
 def dashboard():
@@ -33,7 +33,7 @@ def verify_form(form_id):
 
     if action not in ['approve', 'reject']:
         flash('Aksi tidak valid', 'error')
-        return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin_bp.dashboard'))
 
     form.status = 'approved' if action == 'approve' else 'rejected'
     form.verified_by = current_user.id
@@ -47,4 +47,4 @@ def verify_form(form_id):
         db.session.rollback()
         flash('Terjadi kesalahan saat memverifikasi formulir', 'error')
 
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin_bp.dashboard'))
