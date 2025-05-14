@@ -3,6 +3,7 @@ from flask import Config, Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
+import os
 
 # Inisialisasi Database 
 db = SQLAlchemy()
@@ -13,7 +14,7 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     # Konfigurasi Aplikasi
 # In your app/__init__.py or where you create the Flask app
-    app.config['UPLOAD_FOLDER'] = 'static/uploads/student_images'
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads', 'student_images')
     app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
     app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024  # 2MB limit
     app.config['SECRET_KEY'] = 'mysecret'

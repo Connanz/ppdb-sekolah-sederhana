@@ -20,8 +20,23 @@ def admin_required(f):
 @login_required
 @admin_required
 def dashboard():
+    # Get forms by status
     pending_forms = Form.query.filter_by(status='pending').all()
-    return render_template('parts/admindashboard.html', forms=pending_forms)
+    approved_forms = Form.query.filter_by(status='approved').order_by(Form.verification_date.desc()).all()
+    rejected_forms = Form.query.filter_by(status='rejected').order_by(Form.verification_date.desc()).all()
+    
+    # Get counts
+    pending_count = len(pending_forms)
+    approved_count = len(approved_forms)
+    rejected_count = len(rejected_forms)
+
+    return render_template('parts/admindashboard.html',
+                         pending_forms=pending_forms,
+                         approved_forms=approved_forms,
+                         rejected_forms=rejected_forms,
+                         pending_count=pending_count,
+                         approved_count=approved_count,
+                         rejected_count=rejected_count)
 
 @admin_bp.route('/verify/<int:form_id>', methods=['POST'])
 @login_required

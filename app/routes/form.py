@@ -14,16 +14,15 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
 @form_bp.route('/pendaftaran', methods=['GET', 'POST'])
+@login_required
 def pendaftaran():
     if request.method == 'POST':
-        # Handle file upload first
         if 'student_image' not in request.files:
             flash('Harap unggah foto profil', 'error')
             return redirect(request.url)
 
         file = request.files['student_image']
         
-        # Validate file
         if file.filename == '':
             flash('Tidak ada file yang dipilih', 'error')
             return redirect(request.url)
@@ -32,45 +31,36 @@ def pendaftaran():
             flash('Format file tidak valid. Gunakan JPEG, PNG', 'error')
             return redirect(request.url)
 
-        # Process form data
-        student_name = request.form.get('student_name')
-        student_age = request.form.get('student_age')
-        school_name = request.form.get('school_name')
-
-        # Validate all fields
-        if not all([student_name, student_age, school_name]):
-            flash('Semua field harus diisi!', 'error')
-            return redirect(url_for('form_bp.pendaftaran'))
-
         try:
-            # Save the file
+            # Create uploads directory if it doesn't exist
+            os.makedirs(current_app.config['UPLOAD_FOLDER'], exist_ok=True)
+            
+            # Save file with unique filename
             filename = secure_filename(file.filename)
             unique_filename = f"{uuid.uuid4().hex}_{filename}"
-            upload_folder = current_app.config['UPLOAD_FOLDER']
-            os.makedirs(upload_folder, exist_ok=True)
-            file.save(os.path.join(upload_folder, unique_filename))
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_filename)
+            file.save(file_path)
 
-            # Create new form submission
+            # Create form submission
             new_form = Form(
                 user_id=current_user.id,
-                student_name=student_name,
-                student_age=int(student_age),
-                school_name=school_name,
+                student_name=request.form.get('student_name'),
+                student_age=int(request.form.get('student_age')),
+                school_name=request.form.get('school_name'),
                 image_path=unique_filename
             )
 
             db.session.add(new_form)
             db.session.commit()
 
-        except Exception as e:
-            db.session.rollback()
-            current_app.logger.error(f"Error during registration: {str(e)}")
-            flash('Terjadi kesalahan saat mendaftar. Silakan coba lagi.', 'error')
-            return redirect(url_for('form_bp.pendaftaran'))
-
-        else:
             flash('Pendaftaran berhasil disubmit!', 'success')
             return redirect(url_for('form_bp.status'))
+
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error: {str(e)}")
+            flash('Terjadi kesalahan saat mendaftar', 'error')
+            return redirect(url_for('form_bp.pendaftaran'))
 
     return render_template('parts/form.html')
 

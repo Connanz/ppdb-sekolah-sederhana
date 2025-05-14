@@ -4,10 +4,46 @@
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
-    <div class="bg-white shadow-md rounded-lg p-6">
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-700">Pendaftaran Masuk</h3>
+            <p class="text-3xl font-bold text-blue-600">{{ pending_count }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-700">Diterima</h3>
+            <p class="text-3xl font-bold text-green-600">{{ approved_count }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-700">Ditolak</h3>
+            <p class="text-3xl font-bold text-red-600">{{ rejected_count }}</p>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="mb-6">
+        <div class="border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                <button onclick="showTab('pending')" 
+                        class="tab-button border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                    Menunggu Verifikasi
+                </button>
+                <button onclick="showTab('approved')" 
+                        class="tab-button border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                    Diterima
+                </button>
+                <button onclick="showTab('rejected')" 
+                        class="tab-button border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                    Ditolak
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Pending Applications Table -->
+    <div id="pending-tab" class="tab-content bg-white shadow-md rounded-lg p-6">
         <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Menunggu Verifikasi</h2>
-        
-        {% if forms %}
+        {% if pending_forms %}
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto">
                 <thead class="bg-gray-50">
@@ -15,16 +51,22 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usia</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asal Sekolah</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Foto</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    {% for form in forms %}
+                    {% for form in pending_forms %}
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ form.student_name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ form.student_age }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ form.school_name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4">{{ form.student_name }}</td>
+                        <td class="px-6 py-4">{{ form.student_age }}</td>
+                        <td class="px-6 py-4">{{ form.school_name }}</td>
+                        <td class="px-6 py-4">
+                            <img src="{{ url_for('static', filename='uploads/student_images/' + form.image_path) }}" 
+                                 alt="Student photo" 
+                                 class="h-12 w-12 rounded-full object-cover">
+                        </td>
+                        <td class="px-6 py-4">
                             <form action="{{ url_for('admin_bp.verify_form', form_id=form.id) }}" method="POST" class="space-y-2">
                                 <textarea name="note" class="w-full p-2 border rounded" placeholder="Catatan verifikasi"></textarea>
                                 <div class="space-x-2">
@@ -48,5 +90,94 @@
         <p class="text-gray-500">Tidak ada pendaftaran yang menunggu verifikasi.</p>
         {% endif %}
     </div>
+
+    <!-- Approved Applications Table -->
+    <div id="approved-tab" class="tab-content bg-white shadow-md rounded-lg p-6 hidden">
+        <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Diterima</h2>
+        {% if approved_forms %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usia</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asal Sekolah</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Verifikasi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for form in approved_forms %}
+                    <tr>
+                        <td class="px-6 py-4">{{ form.student_name }}</td>
+                        <td class="px-6 py-4">{{ form.student_age }}</td>
+                        <td class="px-6 py-4">{{ form.school_name }}</td>
+                        <td class="px-6 py-4">{{ form.verification_date.strftime('%d %B %Y') }}</td>
+                        <td class="px-6 py-4">{{ form.verification_note or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-500">Belum ada pendaftaran yang diterima.</p>
+        {% endif %}
+    </div>
+
+    <!-- Rejected Applications Table -->
+    <div id="rejected-tab" class="tab-content bg-white shadow-md rounded-lg p-6 hidden">
+        <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Ditolak</h2>
+        {% if rejected_forms %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usia</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asal Sekolah</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Verifikasi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alasan Penolakan</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for form in rejected_forms %}
+                    <tr>
+                        <td class="px-6 py-4">{{ form.student_name }}</td>
+                        <td class="px-6 py-4">{{ form.student_age }}</td>
+                        <td class="px-6 py-4">{{ form.school_name }}</td>
+                        <td class="px-6 py-4">{{ form.verification_date.strftime('%d %B %Y') }}</td>
+                        <td class="px-6 py-4">{{ form.verification_note or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-500">Belum ada pendaftaran yang ditolak.</p>
+        {% endif %}
+    </div>
 </div>
+
+{% block extra_js %}
+<script>
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('hidden');
+    });
+    
+    // Show selected tab
+    document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+    
+    // Update active tab button
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('border-blue-500', 'text-blue-600');
+        button.classList.add('border-transparent', 'text-gray-500');
+    });
+    event.currentTarget.classList.remove('border-transparent', 'text-gray-500');
+    event.currentTarget.classList.add('border-blue-500', 'text-blue-600');
+}
+</script>
+{% endblock %}
+
 {% endblock %}

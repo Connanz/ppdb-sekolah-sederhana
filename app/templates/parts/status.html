@@ -19,8 +19,9 @@
 
                 <!-- Tambahkan Bagian Ini -->
                 <div class="text-center mb-6">
-                    <img src="{{ url_for('form_bp.uploaded_file', filename=submission.image_path) }}" 
-                         class="h-32 w-32 rounded-full object-cover mx-auto border-2 border-gray-200">
+                    <img src="{{ url_for('static', filename='uploads/student_images/' + submission.image_path) }}" 
+                         class="h-32 w-32 rounded-full object-cover mx-auto border-2 border-gray-200"
+                         alt="Foto Profil">
                     <p class="mt-2 text-sm text-gray-500">Foto Profil</p>
                 </div>
 
@@ -64,3 +65,6 @@
     </div>
 </div>
 {% endblock %}
+
+app/static/uploads/student_images/*
+!app/static/uploads/student_images/.gitkeep
