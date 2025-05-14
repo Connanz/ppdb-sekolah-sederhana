@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
 from flask_login import login_required, current_user
-from app.models import Form, User, UserRole
+from app.models import Form, User, UserRole, Notification
 from app import db
 from datetime import datetime
 from functools import wraps
@@ -12,7 +12,7 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated or current_user.role != UserRole.ADMIN.value:
             flash('Anda tidak memiliki akses ke halaman ini.', 'error')
-            return redirect(url_for('index.home'))
+            return redirect(url_for('index_bp.index'))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -35,16 +35,36 @@ def verify_form(form_id):
         flash('Aksi tidak valid', 'error')
         return redirect(url_for('admin_bp.dashboard'))
 
-    form.status = 'approved' if action == 'approve' else 'rejected'
-    form.verified_by = current_user.id
-    form.verification_date = datetime.utcnow()
-    form.verification_note = note
-
     try:
+        # Update form status
+        form.status = 'approved' if action == 'approve' else 'rejected'
+        form.verified_by = current_user.id
+        form.verification_date = datetime.utcnow()
+        form.verification_note = note
+        form.is_verified = True if action == 'approve' else False
+
+        # Create notification for the user
+        notification_message = (
+            f"Pendaftaran untuk {form.student_name} telah " + 
+            ("disetujui" if action == 'approve' else "ditolak")
+        )
+        if note:
+            notification_message += f". Catatan: {note}"
+
+        notification = Notification(
+            user_id=form.user_id,
+            message=notification_message
+        )
+
+        # Save changes
+        db.session.add(notification)
         db.session.commit()
+
         flash(f'Formulir telah berhasil di{action}', 'success')
+
     except Exception as e:
         db.session.rollback()
         flash('Terjadi kesalahan saat memverifikasi formulir', 'error')
+        current_app.logger.error(f"Error verifying form: {str(e)}")
 
     return redirect(url_for('admin_bp.dashboard'))

@@ -24,13 +24,7 @@
                     <a href="{{ url_for('index_bp.index') }}" class="hover:text-blue-400 transition-colors">Halaman Utama</a>
                     <a href="{{ url_for('index_bp.persyaratan') }}" class="hover:text-blue-400 transition-colors">Persyaratan</a>
                     <a href="{{ url_for('form_bp.pendaftaran') }}" class="hover:text-blue-400 transition-colors">Pendaftaran</a>
-                    <a href="#" class="hover:text-blue-400 transition-colors">Kontak</a>
-                    {% if current_user.is_authenticated %}
-                        <a href="#" class="hover:text-blue-400 transition-colors">Profil Siswa</a>
-                        <a href="{{ url_for('auth_bp.login') }}" class="hover:text-blue-400 transition-colors">Logout</a>
-                    {% else %}
-                        <a href="{{ url_for('auth_bp.login') }}" class="hover:text-blue-400 transition-colors">Login</a>
-                    {% endif %}
+                    <a href="#" class="hover:text-blue-400 transition-colors">Pembayaran</a>
                 </div>
                     <a href="{{ url_for('auth_bp.register') }}" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition-colors">
                         Daftar Sekarang

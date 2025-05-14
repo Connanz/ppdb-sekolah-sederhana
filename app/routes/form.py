@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
-from app.models import Form
+from app.models import Form, Notification
 from app import db
 import os
 import uuid
@@ -100,5 +100,20 @@ def uploaded_file(filename):
 @form_bp.route('/student/dashboard')
 @login_required
 def student_dashboard():
+    # Get user's forms
     user_forms = Form.query.filter_by(user_id=current_user.id).order_by(Form.id.desc()).all()
-    return render_template('parts/studentdashboard.html', user_forms=user_forms)
+    
+    # Get user's notifications
+    notifications = Notification.query.filter_by(
+        user_id=current_user.id
+    ).order_by(Notification.timestamp.desc()).limit(5).all()
+    
+    # Mark notifications as read
+    for notification in notifications:
+        if not notification.read:
+            notification.read = True
+    db.session.commit()
+    
+    return render_template('parts/studentdashboard.html', 
+                         user_forms=user_forms,
+                         notifications=notifications)
