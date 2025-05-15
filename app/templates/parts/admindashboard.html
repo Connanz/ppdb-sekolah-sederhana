@@ -187,8 +187,8 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Siswa</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal Upload</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bukti Pembayaran</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bukti Pembayaran</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                         </tr>
                     </thead>
@@ -198,8 +198,14 @@
                             <td class="px-6 py-4">{{ form.student_name }}</td>
                             <td class="px-6 py-4">{{ form.payment_uploaded_at.strftime('%d %B %Y') if form.payment_uploaded_at else '-' }}</td>
                             <td class="px-6 py-4">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Menunggu Verifikasi
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
                                 {% if form.payment_proof %}
-                                <button onclick="showPaymentProof"('{{ url_for('static', filename='uploads/payment_proofs/' + form.payment_proof) }}')" 
+                                <button type="button" 
+                                        onclick="showPaymentProof('{{ url_for('static', filename='uploads/payment_proofs/' + form.payment_proof) }}')"
                                         class="text-blue-600 hover:text-blue-800 flex items-center">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -210,11 +216,6 @@
                                 {% else %}
                                 <span class="text-gray-500">Belum ada bukti</span>
                                 {% endif %}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    Menunggu Verifikasi
-                                </span>
                             </td>
                             <td class="px-6 py-4">
                                 <form action="{{ url_for('admin_bp.verify_payment', form_id=form.id) }}" method="POST" class="space-y-2">
@@ -242,8 +243,8 @@
         </div>
 
         <!-- Add Modal for Payment Proof -->
-        <div id="paymentProofModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
-            <div class="bg-white p-4 rounded-lg max-w-4xl max-h-[90vh] overflow-auto">
+        <div id="paymentProofModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white p-4 rounded-lg max-w-4xl max-h-[90vh] overflow-auto relative">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold">Bukti Pembayaran</h3>
                     <button onclick="closePaymentProofModal()" class="text-gray-500 hover:text-gray-700">
@@ -252,7 +253,7 @@
                         </svg>
                     </button>
                 </div>
-                <img id="paymentProofImage" class="max-w-full max-h-[70vh] object-contain" src="" alt="Bukti Pembayaran">
+                <img id="paymentProofImage" class="max-w-full h-auto" src="" alt="Bukti Pembayaran">
             </div>
         </div>
 
@@ -337,7 +338,7 @@
 {% block extra_js %}
 <script>
 $(document).ready(function() {
-    // Initialize DataTables with custom styling
+    // DataTable configuration options
     const dataTableOptions = {
         pageLength: 5,
         lengthMenu: [[5, 10, 25, 50], [5, 10, 25, 50]],
@@ -357,7 +358,6 @@ $(document).ready(function() {
         },
         dom: '<"flex items-center justify-between mb-4"<"flex items-center"l><"flex"f>>rtip',
         initComplete: function() {
-            // Custom styling for DataTables elements
             $('.dataTables_length select').addClass('border border-gray-300 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 px-4 py-2');
             $('.dataTables_filter input').addClass('border border-gray-300 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 px-4 py-2 ml-2');
             $('.dataTables_paginate .paginate_button').addClass('px-3 py-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50');
@@ -365,33 +365,44 @@ $(document).ready(function() {
         }
     };
 
-    // Initialize tables
-    const pendingTable = $('#pendingTable').DataTable(dataTableOptions);
-    const approvedTable = $('#approvedTable').DataTable(dataTableOptions);
-    const rejectedTable = $('#rejectedTable').DataTable(dataTableOptions);
-    const pendingPaymentsTable = $('#pendingPaymentsTable').DataTable(dataTableOptions);
-    const verifiedPaymentsTable = $('#verifiedPaymentsTable').DataTable(dataTableOptions);
-    const rejectedPaymentsTable = $('#rejectedPaymentsTable').DataTable(dataTableOptions);
-
-    // Payment management
-    function showPaymentSection(section) {
-        // Hide all payment sections
-        document.querySelectorAll('.payment-section').forEach(el => {
-            el.classList.add('hidden');
-        });
-        
-        // Show selected section
-        document.getElementById(`${section}-payments`).classList.remove('hidden');
-        
-        // Initialize or adjust DataTables
-        if ($.fn.DataTable.isDataTable(`#${section}PaymentsTable`)) {
-            $(`#${section}PaymentsTable`).DataTable().columns.adjust().draw();
-        } else {
-            $(`#${section}PaymentsTable`).DataTable(dataTableOptions);
+    // Function to safely initialize or get DataTable
+    function initializeDataTable(tableId) {
+        const table = $(`#${tableId}`);
+        if (!$.fn.DataTable.isDataTable(table)) {
+            return table.DataTable(dataTableOptions);
         }
+        return table.DataTable();
     }
 
-    // Update the showTab function
+    // Initialize all tables
+    const tables = {
+        pending: initializeDataTable('pendingTable'),
+        approved: initializeDataTable('approvedTable'),
+        rejected: initializeDataTable('rejectedTable'),
+        pendingPayments: initializeDataTable('pendingPaymentsTable'),
+        verifiedPayments: initializeDataTable('verifiedPaymentsTable'),
+        rejectedPayments: initializeDataTable('rejectedPaymentsTable')
+    };
+
+    // Payment section switching function
+    window.showPaymentSection = function(sectionName) {
+        $('.payment-section').addClass('hidden');
+        $(`#${sectionName}-payments`).removeClass('hidden');
+
+        const tableMap = {
+            pending: tables.pendingPayments,
+            verified: tables.verifiedPayments,
+            rejected: tables.rejectedPayments
+        };
+
+        if (tableMap[sectionName]) {
+            setTimeout(() => {
+                tableMap[sectionName].columns.adjust().draw();
+            }, 0);
+        }
+    };
+
+    // Tab switching function
     window.showTab = function(tabName) {
         $('.tab-content').addClass('hidden');
         $(`#${tabName}-tab`).removeClass('hidden');
@@ -401,66 +412,77 @@ $(document).ready(function() {
         $(event.currentTarget).removeClass('border-transparent text-gray-500')
                             .addClass('border-blue-500 text-blue-600');
 
-        // Adjust DataTables columns when shown
         if (tabName === 'payment') {
-            showPaymentSection('pending'); // Show pending payments by default
+            showPaymentSection('pending');
         } else {
-            switch(tabName) {
-                case 'pending':
-                    pendingTable.columns.adjust().draw();
-                    break;
-                case 'approved':
-                    approvedTable.columns.adjust().draw();
-                    break;
-                case 'rejected':
-                    rejectedTable.columns.adjust().draw();
-                    break;
+            const tableMap = {
+                pending: tables.pending,
+                approved: tables.approved,
+                rejected: tables.rejected
+            };
+
+            if (tableMap[tabName]) {
+                setTimeout(() => {
+                    tableMap[tabName].columns.adjust().draw();
+                }, 0);
             }
         }
     };
 
-    // Payment section switching function
-    window.showPaymentSection = function(sectionName) {
-        // Hide all payment sections
-        $('.payment-section').addClass('hidden');
-
-        // Show selected payment section
-        $(`#${sectionName}-payments`).removeClass('hidden');
-
-        // Adjust DataTables columns when shown
-        switch(sectionName) {
-            case 'pending':
-                pendingPaymentsTable.columns.adjust().draw();
-                break;
-            case 'verified':
-                verifiedPaymentsTable.columns.adjust().draw();
-                break;
-            case 'rejected':
-                rejectedPaymentsTable.columns.adjust().draw();
-                break;
-        }
+    // Modal functions
+    window.showPaymentProof = function(imageUrl) {
+        const modal = document.getElementById('paymentProofModal');
+        const image = document.getElementById('paymentProofImage');
+        image.src = imageUrl;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
     };
+
+    window.closePaymentProofModal = function() {
+        const modal = document.getElementById('paymentProofModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    };
+
+    // Close modal when clicking outside
+    document.getElementById('paymentProofModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closePaymentProofModal();
+        }
+    });
 
     // Show pending tab by default
     showTab('pending');
 });
 
-// Modal for Payment Proof
 function showPaymentProof(imageUrl) {
     const modal = document.getElementById('paymentProofModal');
     const image = document.getElementById('paymentProofImage');
+    
+    // Set image source
     image.src = imageUrl;
+    
+    // Show modal with flex display
     modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    
+    // Enable clicking outside modal to close
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            closePaymentProofModal();
+        }
+    };
 }
 
 function closePaymentProofModal() {
     const modal = document.getElementById('paymentProofModal');
     modal.classList.add('hidden');
+    modal.classList.remove('flex');
 }
 
-// Close modal when clicking outside
-document.getElementById('paymentProofModal').addEventListener('click', function(e) {
-    if (e.target === this) {
+// Add keyboard support for closing modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
         closePaymentProofModal();
     }
 });
@@ -468,3 +490,4 @@ document.getElementById('paymentProofModal').addEventListener('click', function(
 {% endblock %}
 
 {% endblock %}
+```html

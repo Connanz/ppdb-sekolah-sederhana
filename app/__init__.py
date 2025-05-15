@@ -15,7 +15,7 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     # Konfigurasi Aplikasi
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads', 'student_images') # Folder yang menampung foto profil siswa-siswi yang diupload oleh siswa-siswi itu sendiri
-    app.config['PAYMENT_UPLOADS'] = os.path.join(app.config['UPLOAD_FOLDER'], 'payment_proofs') # Folder yang menampung bukti pembayaran dari user/siswa-siswi
+    app.config['PAYMENT_UPLOADS'] = os.path.join(app.root_path, 'static', 'uploads', 'payment_proofs') # Folder yang menampung bukti pembayaran dari user/siswa-siswi
     app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf'} # Jenis file yang diizinkan untuk foto profil dan dokumen
     app.config['ALLOWED_PAYMENT_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}  # Jenis file yang diizinkan untuk bukti pembayaran
     app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # limit yang diberikan hanya 5MB 

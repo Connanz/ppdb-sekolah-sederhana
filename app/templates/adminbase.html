@@ -37,6 +37,34 @@
         table.dataTable tbody td {
             @apply px-6 py-4 whitespace-nowrap;
         }
+
+        /* Modal styles */
+        #paymentProofModal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        #paymentProofModal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        #paymentProofModal:not(.hidden) {
+            opacity: 1;
+        }
+        
+        #paymentProofImage {
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -102,3 +130,4 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+``` 
