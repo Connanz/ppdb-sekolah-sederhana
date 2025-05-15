@@ -56,7 +56,8 @@ def pendaftaran():
                 student_email=request.form.get('student_email'),
                 school_name=request.form.get('school_name'),
                 image_path=profile_unique_filename,
-                document_path=doc_unique_filename
+                document_path=doc_unique_filename,
+                payment_status='unpaid' 
             )
 
             db.session.add(new_form)

@@ -1,7 +1,7 @@
 # Mengimport library yang diperlukan 
 from flask import Config, Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 import os
 
@@ -31,7 +31,16 @@ def create_app(config_class=Config):
         from app.models import User
         return User.query.get(int(user_id))
     
-    
+    @app.context_processor
+    def utility_processor():
+        def get_latest_form():
+            if not current_user.is_authenticated:
+                return None
+            from app.models import Form
+            return Form.query.filter_by(
+                user_id=current_user.id
+            ).order_by(Form.id.desc()).first()
+        return dict(latest_form=get_latest_form())
 
 
     # Daftarkan Blueprint
