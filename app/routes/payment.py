@@ -9,7 +9,8 @@ from werkzeug.utils import secure_filename
 payment_bp = Blueprint('payment_bp', __name__)
 
 def allowed_payment_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_PAYMENT_EXTENSIONS']
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_PAYMENT_EXTENSIONS']
 
 @payment_bp.route('/payment/<int:form_id>', methods=['GET', 'POST'])
 @login_required

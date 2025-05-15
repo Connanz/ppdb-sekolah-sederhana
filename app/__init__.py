@@ -16,7 +16,8 @@ def create_app(config_class=Config):
 # In your app/__init__.py or where you create the Flask app
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads', 'student_images')
     app.config['PAYMENT_UPLOADS'] = os.path.join(app.config['UPLOAD_FOLDER'], 'payment_proofs')
-    app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+    app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf'}
+    app.config['ALLOWED_PAYMENT_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}  # Tambahkan ini
     app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 2MB limit
     app.config['SECRET_KEY'] = 'mysecret'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ppdbsekolah.db'
@@ -42,7 +43,6 @@ def create_app(config_class=Config):
                 user_id=current_user.id
             ).order_by(Form.id.desc()).first()
         return dict(latest_form=get_latest_form())
-
 
     # Daftarkan Blueprint
     from .routes import register_blueprints
