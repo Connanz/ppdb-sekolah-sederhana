@@ -67,5 +67,83 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Document Section -->
+    <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-xl font-bold mb-4">Dokumen Pendaftaran</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Document Preview -->
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Dokumen yang Diunggah</h3>
+                {% if form.document_path %}
+                <div class="border rounded-lg p-4">
+                    <a href="{{ url_for('static', filename='uploads/student_images/' + form.document_path) }}"
+                       target="_blank"
+                       class="flex items-center text-blue-600 hover:text-blue-800">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Lihat Dokumen
+                    </a>
+                    <p class="text-sm text-gray-500 mt-2">
+                        Format: {{ form.document_path.split('.')[-1].upper() }}
+                    </p>
+                </div>
+                {% else %}
+                <p class="text-gray-500">Belum ada dokumen yang diunggah</p>
+                {% endif %}
+            </div>
+
+            <!-- Payment Proof -->
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Bukti Pembayaran</h3>
+                {% if form.payment_proof %}
+                <div class="border rounded-lg p-4">
+                    <button onclick="showPaymentProof"('{{ url_for('static', filename='uploads/payment_proofs/' + form.payment_proof) }}')"
+                            class="flex items-center text-blue-600 hover:text-blue-800">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        Lihat Bukti Pembayaran
+                    </button>
+                    <p class="text-sm text-gray-500 mt-2">
+                        Status: 
+                        <span class="{% if form.payment_status == 'verified' %}text-green-600{% elif form.payment_status == 'rejected' %}text-red-600{% else %}text-yellow-600{% endif %}">
+                            {{ form.payment_status }}
+                        </span>
+                    </p>
+                </div>
+                {% else %}
+                <p class="text-gray-500">Belum ada bukti pembayaran</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+function showPaymentProof(imageUrl) {
+    const modal = document.getElementById('paymentProofModal');
+    const image = document.getElementById('paymentProofImage');
+    image.src = imageUrl;
+    modal.classList.remove('hidden');
+}
+
+function closePaymentProofModal() {
+    const modal = document.getElementById('paymentProofModal');
+    modal.classList.add('hidden');
+}
+
+// Close modal when clicking outside
+document.getElementById('paymentProofModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePaymentProofModal();
+    }
+});
+</script>
 {% endblock %}

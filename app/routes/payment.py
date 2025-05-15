@@ -19,7 +19,7 @@ def payment_process(form_id):
     
     if form.user_id != current_user.id:
         flash('Unauthorized access', 'error')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('index_bp.index'))
 
     if request.method == 'POST':
         # Ensure the payment_proofs directory exists

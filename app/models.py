@@ -70,10 +70,18 @@ class Form(db.Model):
     verification_note = db.Column(db.Text, nullable=True)
     is_verified = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    payment_status = db.Column(db.String(50), default='unpaid')  # unpaid, pending_verification, verified
+    payment_status = db.Column(db.String(20), default='pending', nullable=False)
     payment_proof = db.Column(db.String(255), nullable=True)
+    payment_uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
     payment_verified_at = db.Column(db.DateTime, nullable=True)
     payment_verified_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    payment_note = db.Column(db.Text, nullable=True)
+    
+    # Add relationship for payment verifier
+    payment_verifier = db.relationship('User',
+        foreign_keys=[payment_verified_by],
+        backref='verified_payments'
+    )
 
     def create_notification(self, message):
         """Create a notification for the form owner"""

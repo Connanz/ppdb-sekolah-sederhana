@@ -28,8 +28,10 @@ def dashboard():
     approved_forms = Form.query.filter_by(status='approved').order_by(Form.verification_date.desc()).all()
     rejected_forms = Form.query.filter_by(status='rejected').order_by(Form.verification_date.desc()).all()
     
-    # Get pending payments
+    # Get payments by status
     pending_payments = Form.query.filter_by(payment_status='pending_verification').all()
+    verified_payments = Form.query.filter_by(payment_status='verified').all()
+    rejected_payments = Form.query.filter_by(payment_status='rejected').all()
     
     # Get counts
     pending_count = len(pending_forms)
@@ -41,6 +43,8 @@ def dashboard():
                          approved_forms=approved_forms,
                          rejected_forms=rejected_forms,
                          pending_payments=pending_payments,
+                         verified_payments=verified_payments,
+                         rejected_payments=rejected_payments,
                          pending_count=pending_count,
                          approved_count=approved_count,
                          rejected_count=rejected_count)
