@@ -45,7 +45,7 @@
         <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Menunggu Verifikasi</h2>
         {% if pending_forms %}
         <div class="overflow-x-auto">
-            <table class="min-w-full table-auto">
+            <table id="pendingTable" class="min-w-full table-auto display">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
@@ -101,7 +101,7 @@
         <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Diterima</h2>
         {% if approved_forms %}
         <div class="overflow-x-auto">
-            <table class="min-w-full table-auto">
+            <table id="approvedTable" class="min-w-full table-auto display">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
@@ -134,7 +134,7 @@
         <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Ditolak</h2>
         {% if rejected_forms %}
         <div class="overflow-x-auto">
-            <table class="min-w-full table-auto">
+            <table id="rejectedTable" class="min-w-full table-auto display">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
@@ -165,23 +165,71 @@
 
 {% block extra_js %}
 <script>
-function showTab(tabName) {
-    // Hide all tabs
-    document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.add('hidden');
-    });
-    
-    // Show selected tab
-    document.getElementById(`${tabName}-tab`).classList.remove('hidden');
-    
-    // Update active tab button
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('border-blue-500', 'text-blue-600');
-        button.classList.add('border-transparent', 'text-gray-500');
-    });
-    event.currentTarget.classList.remove('border-transparent', 'text-gray-500');
-    event.currentTarget.classList.add('border-blue-500', 'text-blue-600');
-}
+$(document).ready(function() {
+    // Initialize DataTables with custom styling
+    const dataTableOptions = {
+        pageLength: 5,
+        lengthMenu: [[5, 10, 25, 50], [5, 10, 25, 50]],
+        responsive: true,
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+            infoFiltered: "(disaring dari _MAX_ total data)",
+            paginate: {
+                first: "Pertama",
+                last: "Terakhir",
+                next: "Selanjutnya",
+                previous: "Sebelumnya"
+            }
+        },
+        dom: '<"flex items-center justify-between mb-4"<"flex items-center"l><"flex"f>>rtip',
+        initComplete: function() {
+            // Custom styling for DataTables elements
+            $('.dataTables_length select').addClass('border border-gray-300 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 px-4 py-2');
+            $('.dataTables_filter input').addClass('border border-gray-300 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 px-4 py-2 ml-2');
+            $('.dataTables_paginate .paginate_button').addClass('px-3 py-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50');
+            $('.dataTables_paginate .paginate_button.current').addClass('bg-blue-500 text-white border-blue-500 hover:bg-blue-600');
+        }
+    };
+
+    // Initialize tables
+    const pendingTable = $('#pendingTable').DataTable(dataTableOptions);
+    const approvedTable = $('#approvedTable').DataTable(dataTableOptions);
+    const rejectedTable = $('#rejectedTable').DataTable(dataTableOptions);
+
+    // Tab switching function with DataTables support
+    window.showTab = function(tabName) {
+        // Hide all tabs
+        $('.tab-content').addClass('hidden');
+        
+        // Show selected tab
+        $(`#${tabName}-tab`).removeClass('hidden');
+        
+        // Update active tab button
+        $('.tab-button').removeClass('border-blue-500 text-blue-600')
+                       .addClass('border-transparent text-gray-500');
+        $(event.currentTarget).removeClass('border-transparent text-gray-500')
+                            .addClass('border-blue-500 text-blue-600');
+
+        // Adjust DataTables columns when shown
+        switch(tabName) {
+            case 'pending':
+                pendingTable.columns.adjust().draw();
+                break;
+            case 'approved':
+                approvedTable.columns.adjust().draw();
+                break;
+            case 'rejected':
+                rejectedTable.columns.adjust().draw();
+                break;
+        }
+    };
+
+    // Show pending tab by default
+    showTab('pending');
+});
 </script>
 {% endblock %}
 

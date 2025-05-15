@@ -12,6 +12,32 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     {% block extra_css %}{% endblock %}
+    <style>
+        /* Custom DataTables styling */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_processing,
+        .dataTables_wrapper .dataTables_paginate {
+            @apply text-gray-700 my-4;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            @apply bg-blue-500 text-white border-blue-500;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            @apply bg-gray-100;
+        }
+
+        table.dataTable thead th {
+            @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50;
+        }
+
+        table.dataTable tbody td {
+            @apply px-6 py-4 whitespace-nowrap;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <!-- Navigation -->
