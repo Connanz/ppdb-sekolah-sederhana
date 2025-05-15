@@ -17,37 +17,46 @@ def allowed_file(filename):
 @login_required
 def pendaftaran():
     if request.method == 'POST':
-        if 'student_image' not in request.files:
-            flash('Harap unggah foto profil', 'error')
+        if 'student_image' not in request.files or 'document' not in request.files:
+            flash('Harap unggah foto profil dan dokumen', 'error')
             return redirect(request.url)
 
-        file = request.files['student_image']
+        profile_file = request.files['student_image']
+        document_file = request.files['document']
         
-        if file.filename == '':
+        if profile_file.filename == '' or document_file.filename == '':
             flash('Tidak ada file yang dipilih', 'error')
             return redirect(request.url)
             
-        if not (file and allowed_file(file.filename)):
-            flash('Format file tidak valid. Gunakan JPEG, PNG', 'error')
+        if not allowed_file(profile_file.filename) or not allowed_file(document_file.filename):
+            flash('Format file tidak valid. Gunakan JPEG, PNG untuk foto dan JPEG, PNG, PDF untuk dokumen', 'error')
             return redirect(request.url)
 
         try:
             # Create uploads directory if it doesn't exist
             os.makedirs(current_app.config['UPLOAD_FOLDER'], exist_ok=True)
             
-            # Save file with unique filename
-            filename = secure_filename(file.filename)
-            unique_filename = f"{uuid.uuid4().hex}_{filename}"
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_filename)
-            file.save(file_path)
+            # Save profile image
+            profile_filename = secure_filename(profile_file.filename)
+            profile_unique_filename = f"profile_{uuid.uuid4().hex}_{profile_filename}"
+            profile_path = os.path.join(current_app.config['UPLOAD_FOLDER'], profile_unique_filename)
+            profile_file.save(profile_path)
+
+            # Save document
+            doc_filename = secure_filename(document_file.filename)
+            doc_unique_filename = f"doc_{uuid.uuid4().hex}_{doc_filename}"
+            doc_path = os.path.join(current_app.config['UPLOAD_FOLDER'], doc_unique_filename)
+            document_file.save(doc_path)
 
             # Create form submission
             new_form = Form(
                 user_id=current_user.id,
                 student_name=request.form.get('student_name'),
                 student_age=int(request.form.get('student_age')),
+                student_email=request.form.get('student_email'),
                 school_name=request.form.get('school_name'),
-                image_path=unique_filename
+                image_path=profile_unique_filename,
+                document_path=doc_unique_filename
             )
 
             db.session.add(new_form)

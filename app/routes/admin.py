@@ -83,3 +83,13 @@ def verify_form(form_id):
         current_app.logger.error(f"Error verifying form: {str(e)}")
 
     return redirect(url_for('admin_bp.dashboard'))
+
+@admin_bp.route('/student/<int:form_id>')
+@login_required
+def student_detail(form_id):
+    if not current_user.is_admin():
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('main.index'))
+        
+    form = Form.query.get_or_404(form_id)
+    return render_template('parts/student_detail.html', form=form)

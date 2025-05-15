@@ -1,0 +1,71 @@
+{% extends "adminbase.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Detail Siswa</h1>
+            <a href="{{ url_for('admin_bp.dashboard') }}" 
+               class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                Kembali
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Profile Photo -->
+            <div class="text-center">
+                <img src="{{ url_for('static', filename='uploads/student_images/' + form.image_path) }}"
+                     alt="Foto Profil"
+                     class="w-48 h-48 rounded-full mx-auto object-cover border-4 border-gray-200">
+                <p class="mt-2 text-gray-600">Foto Profil Siswa</p>
+            </div>
+
+            <!-- Student Information -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                    <p class="mt-1 text-lg">{{ form.student_name }}</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Usia</label>
+                    <p class="mt-1 text-lg">{{ form.student_age }} tahun</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <p class="mt-1 text-lg">{{ form.student_email }}</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Asal Sekolah</label>
+                    <p class="mt-1 text-lg">{{ form.school_name }}</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Status</label>
+                    <p class="mt-1 text-lg">
+                        {% if form.status == 'pending' %}
+                            <span class="text-yellow-600">Menunggu Verifikasi</span>
+                        {% elif form.status == 'approved' %}
+                            <span class="text-green-600">Diterima</span>
+                        {% else %}
+                            <span class="text-red-600">Ditolak</span>
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!-- Document Preview -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Dokumen</label>
+                    <a href="{{ url_for('static', filename='uploads/' + form.document_path) }}"
+                       class="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                       target="_blank">
+                        Lihat Dokumen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

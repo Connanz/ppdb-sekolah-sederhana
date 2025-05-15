@@ -69,7 +69,12 @@
                         <td class="px-6 py-4">
                             <form action="{{ url_for('admin_bp.verify_form', form_id=form.id) }}" method="POST" class="space-y-2">
                                 <textarea name="note" class="w-full p-2 border rounded" placeholder="Catatan verifikasi"></textarea>
-                                <div class="space-x-2">
+                               <div class="space-x-2">
+                                    <!-- Add Detail Button -->
+                                    <a href="{{ url_for('admin_bp.student_detail', form_id=form.id) }}" 
+                                       class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                        Detail
+                                    </a>
                                     <button type="submit" name="action" value="approve" 
                                             class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
                                         Setujui

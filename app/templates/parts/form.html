@@ -10,6 +10,7 @@
                         <h2 class="text-2xl font-bold mb-8 text-center">Form Pendaftaran Siswa Baru</h2>
 
                         <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                            <!-- Foto Profil -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Foto Profil</label>
                                 <div class="mt-1 flex items-center">
@@ -24,22 +25,40 @@
                                 <p class="mt-2 text-xs text-gray-500">Format: JPEG, PNG (Maks. 2MB)</p>
                             </div>
 
+                            <!-- Nama Lengkap -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                                 <input type="text" name="student_name" required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
+                            <!-- Umur -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Umur</label>
-                                <input type="number" name="student_age" required
+                                <input type="number" name="student_age" required min="0" max="100"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Alamat Email</label>
+                                <input type="email" name="student_email" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+
+                            <!-- Asal Sekolah -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Asal Sekolah</label>
                                 <input type="text" name="school_name" required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+
+                            <!-- Dokumen -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Dokumen Pendukung</label>
+                                <input type="file" name="document" accept=".pdf,.jpg,.jpeg,.png" required
+                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <p class="mt-2 text-xs text-gray-500">Format: PDF, JPEG, PNG (Maks. 5MB)</p>
                             </div>
 
                             <div class="pt-4">
