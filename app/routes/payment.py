@@ -6,63 +6,58 @@ import os
 import uuid
 from werkzeug.utils import secure_filename
 
-payment_bp = Blueprint('payment_bp', __name__, template_folder='templates')
+payment_bp = Blueprint('payment_bp', __name__)
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
+def allowed_payment_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_PAYMENT_EXTENSIONS']
 
 @payment_bp.route('/payment/<int:form_id>', methods=['GET', 'POST'])
 @login_required
 def payment_process(form_id):
     form = Form.query.get_or_404(form_id)
     
-    # Ensure the form belongs to the current user
     if form.user_id != current_user.id:
         flash('Unauthorized access', 'error')
         return redirect(url_for('main.index'))
-    
-    # Check if payment is already completed
-    if form.payment_status == 'verified':
-        flash('Pembayaran sudah diverifikasi', 'info')
-        return redirect(url_for('form_bp.student_dashboard'))
 
     if request.method == 'POST':
+        # Ensure the payment_proofs directory exists
+        os.makedirs(current_app.config['PAYMENT_UPLOADS'], exist_ok=True)
+
         if 'payment_proof' not in request.files:
-            flash('Tidak ada file yang dipilih', 'error')
+            flash('No file selected', 'error')
             return redirect(request.url)
-
+            
         file = request.files['payment_proof']
+        
         if file.filename == '':
-            flash('Tidak ada file yang dipilih', 'error')
+            flash('No file selected', 'error')
             return redirect(request.url)
 
-        if file and allowed_file(file.filename):
+        if file and allowed_payment_file(file.filename):
             try:
-                # Create payment proofs directory if it doesn't exist
-                payment_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], 'payment_proofs')
-                os.makedirs(payment_folder, exist_ok=True)
-
-                # Save payment proof
+                # Generate secure filename
                 filename = secure_filename(file.filename)
                 unique_filename = f"payment_{uuid.uuid4().hex}_{filename}"
-                file_path = os.path.join(payment_folder, unique_filename)
+                file_path = os.path.join(current_app.config['PAYMENT_UPLOADS'], unique_filename)
+                
+                # Save the file
                 file.save(file_path)
-
-                # Update form payment status
+                
+                # Update database
                 form.payment_proof = unique_filename
                 form.payment_status = 'pending_verification'
                 db.session.commit()
-
-                flash('Bukti pembayaran berhasil diunggah', 'success')
+                
+                flash('Bukti pembayaran berhasil diupload!', 'success')
                 return redirect(url_for('payment_bp.payment_success'))
             
             except Exception as e:
-                current_app.logger.error(f"Error in payment process: {str(e)}")
-                flash('Terjadi kesalahan saat mengupload bukti pembayaran', 'error')
+                current_app.logger.error(f"Payment upload error: {str(e)}")
+                flash('Error uploading payment proof', 'error')
                 return redirect(request.url)
         else:
-            flash('Format file tidak diizinkan', 'error')
+            flash('File type not allowed. Please use JPG, JPEG, or PNG', 'error')
             return redirect(request.url)
 
     return render_template('parts/payment.html', form=form)
