@@ -4,10 +4,12 @@ from app import db
 from enum import Enum
 from datetime import datetime, timezone
 
+# Mengelompokkan role/peran user & admin
 class UserRole(Enum):
     STUDENT = 'student'
     ADMIN = 'admin'
 
+# Implementasi dalam model User berdasarkan role/peran yang ditetapkan di "class UserRole(Enum):"
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
@@ -52,6 +54,7 @@ class User(UserMixin, db.Model):
         """Get count of unread notifications"""
         return Notification.query.filter_by(user_id=self.id, read=False).count()
 
+# Model Form yaitu untuk menyimpan data pendaftaran siswa-siswi, bukti pembayaran, dan status pendaftaran
 class Form(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -82,6 +85,7 @@ class Form(db.Model):
         db.session.add(notification)
         return notification
 
+# Model Notification yaitu memberikan notifikasi kepada user/siswa-siswi
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

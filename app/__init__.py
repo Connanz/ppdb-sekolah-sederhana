@@ -8,19 +8,19 @@ import os
 # Inisialisasi Database 
 db = SQLAlchemy()
 
+# Inisialisasi Login Manager
 login_manager =  LoginManager()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     # Konfigurasi Aplikasi
-# In your app/__init__.py or where you create the Flask app
-    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads', 'student_images')
-    app.config['PAYMENT_UPLOADS'] = os.path.join(app.config['UPLOAD_FOLDER'], 'payment_proofs')
-    app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf'}
-    app.config['ALLOWED_PAYMENT_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}  # Tambahkan ini
-    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 2MB limit
-    app.config['SECRET_KEY'] = 'mysecret'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ppdbsekolah.db'
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads', 'student_images') # Folder yang menampung foto profil siswa-siswi yang diupload oleh siswa-siswi itu sendiri
+    app.config['PAYMENT_UPLOADS'] = os.path.join(app.config['UPLOAD_FOLDER'], 'payment_proofs') # Folder yang menampung bukti pembayaran dari user/siswa-siswi
+    app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf'} # Jenis file yang diizinkan untuk foto profil dan dokumen
+    app.config['ALLOWED_PAYMENT_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}  # Jenis file yang diizinkan untuk bukti pembayaran
+    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # limit yang diberikan hanya 5MB 
+    app.config['SECRET_KEY'] = 'mysecret' # Kunci rahasia 
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ppdbsekolah.db' # Nama databse yang digunakan berdasarkan bentuk model yang ada di models.py
     app.config['SQALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # Inisialisasi ekstensi
@@ -28,11 +28,13 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     login_manager.login_view = 'auth_bp.login'
 
+    # Login Manager mengambil data dari models "User" di database `ppdbsekolah.db`
     @login_manager.user_loader
     def load_user(user_id):
         from app.models import User
         return User.query.get(int(user_id))
     
+    # Konfigurasi pada models "Form" di models.py dimana filter mengambil data dari setiap user yang login serta 
     @app.context_processor
     def utility_processor():
         def get_latest_form():
@@ -48,7 +50,7 @@ def create_app(config_class=Config):
     from .routes import register_blueprints
     register_blueprints(app)
 
-    # Register CLI commands
+    # Registerasi perintah CLI agar bisa membuat admin di terminal PowerShell
     from .cli import create_admin
     app.cli.add_command(create_admin)
 

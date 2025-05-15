@@ -3,6 +3,7 @@ from flask.cli import with_appcontext
 from werkzeug.security import generate_password_hash
 from .models import db, User, UserRole
 
+# Model CLI untuk membuat admin di terminal PowerShell sesuai dengan ketikan pembuat aplikasi (saya sendiri), tidak dapat berjalan ketika file run.py tengah dijalankan
 @click.command('create-admin')
 @click.argument('username')
 @click.argument('password')

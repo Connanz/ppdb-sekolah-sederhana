@@ -5,8 +5,10 @@ from app import db
 from datetime import datetime
 from functools import wraps
 
+# Inisialisasi blueprint untuk admin
 admin_bp = Blueprint('admin_bp', __name__, template_folder='templates')
 
+# Verifikasi yang memastikan hanya admin yag dapat mengakses halaman admin, jika tidak maka akan diarahkan ke halaman utama(index_bp.index)
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -16,6 +18,7 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Rute dashboard untuk admin 
 @admin_bp.route('admin/dashboard')
 @login_required
 @admin_required
@@ -24,6 +27,9 @@ def dashboard():
     pending_forms = Form.query.filter_by(status='pending').all()
     approved_forms = Form.query.filter_by(status='approved').order_by(Form.verification_date.desc()).all()
     rejected_forms = Form.query.filter_by(status='rejected').order_by(Form.verification_date.desc()).all()
+    
+    # Get pending payments
+    pending_payments = Form.query.filter_by(payment_status='pending_verification').all()
     
     # Get counts
     pending_count = len(pending_forms)
@@ -34,10 +40,12 @@ def dashboard():
                          pending_forms=pending_forms,
                          approved_forms=approved_forms,
                          rejected_forms=rejected_forms,
+                         pending_payments=pending_payments,
                          pending_count=pending_count,
                          approved_count=approved_count,
                          rejected_count=rejected_count)
 
+# rute untuk memverifikasi formulir pendaftaran oleh admin dari data yang dikirmkan oleh user/siswa-siswi
 @admin_bp.route('/verify/<int:form_id>', methods=['POST'])
 @login_required
 @admin_required
@@ -84,6 +92,47 @@ def verify_form(form_id):
 
     return redirect(url_for('admin_bp.dashboard'))
 
+# rute untuk memverifikasi pembayaran oleh admin dari data yang dikirmkan oleh user/siswa-siswi
+@admin_bp.route('/verify-payment/<int:form_id>', methods=['POST'])
+@login_required
+@admin_required
+def verify_payment(form_id):
+    form = Form.query.get_or_404(form_id)
+    action = request.form.get('action')
+    note = request.form.get('note')
+
+    try:
+        if action == 'verify':
+            form.payment_status = 'verified'
+            message = "Pembayaran Anda telah diverifikasi"
+        else:
+            form.payment_status = 'rejected'
+            message = "Pembayaran Anda ditolak"
+
+        if note:
+            message += f". Catatan: {note}"
+
+        form.payment_verified_at = datetime.utcnow()
+        form.payment_verified_by = current_user.id
+
+        # Create notification
+        notification = Notification(
+            user_id=form.user_id,
+            message=message,
+            form_id=form.id
+        )
+        db.session.add(notification)
+        db.session.commit()
+
+        flash(f'Status pembayaran berhasil diperbarui', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Terjadi kesalahan saat memverifikasi pembayaran', 'error')
+        current_app.logger.error(f"Error verifying payment: {str(e)}")
+
+    return redirect(url_for('admin_bp.dashboard'))
+
+# Detail User/siswa-siswi yang telah mengirimkan formulir pendaftaran, namun ada verifikasi yang menunjukkan hanya admin yang dapat melihat detail siswa-siswi
 @admin_bp.route('/student/<int:form_id>')
 @login_required
 def student_detail(form_id):
