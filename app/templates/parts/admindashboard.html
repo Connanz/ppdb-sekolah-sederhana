@@ -11,11 +11,11 @@
             <p class="text-3xl font-bold text-blue-600">{{ pending_count }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold text-gray-700">Diterima</h3>
+            <h3 class="text-lg font-semibold text-gray-700">Siswa-Siswi Diterima</h3>
             <p class="text-3xl font-bold text-green-600">{{ approved_count }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold text-gray-700">Ditolak</h3>
+            <h3 class="text-lg font-semibold text-gray-700">Siswa-Siswi Ditolak</h3>
             <p class="text-3xl font-bold text-red-600">{{ rejected_count }}</p>
         </div>
     </div>
@@ -171,10 +171,23 @@
     <div id="payment-tab" class="tab-content bg-white shadow-md rounded-lg p-6 hidden">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold">Verifikasi Pembayaran</h2>
-            <div class="flex space-x-4">
-                <button onclick="showPaymentSection('pending')" class="text-blue-600 hover:text-blue-800">Menunggu Verifikasi</button>
-                <button onclick="showPaymentSection('verified')" class="text-green-600 hover:text-green-800">Diterima</button>
-                <button onclick="showPaymentSection('rejected')" class="text-red-600 hover:text-red-800">Ditolak</button>
+            <!-- Update the payment section buttons -->
+            <div class="flex space-x-4 mb-6">
+                <button onclick="showPaymentSection('pending')" 
+                        class="payment-section-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        data-section="pending">
+                    Menunggu Verifikasi
+                </button>
+                <button onclick="showPaymentSection('verified')" 
+                        class="payment-section-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        data-section="verified">
+                    Diterima
+                </button>
+                <button onclick="showPaymentSection('rejected')" 
+                        class="payment-section-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        data-section="rejected">
+                    Ditolak
+                </button>
             </div>
         </div>
 
@@ -490,4 +503,3 @@ document.addEventListener('keydown', function(e) {
 {% endblock %}
 
 {% endblock %}
-```html

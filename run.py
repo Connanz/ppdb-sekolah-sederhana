@@ -3,7 +3,7 @@ from flask import current_app
 
 app = create_app() 
 
-# Create database tables if they don't exist
+# Membuat database jika belum ada
 with app.app_context():
     db.create_all()  
 
