@@ -77,18 +77,28 @@
                                <div class="space-x-2">
                                     <!-- Add Detail Button -->
                                     <a href="{{ url_for('admin_bp.student_detail', form_id=form.id) }}" 
-                                       class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                        Detail
-                                    </a>
-                                    <button type="submit" name="action" value="approve" 
-                                            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                                        Setujui
-                                    </button>
-                                    <button type="submit" name="action" value="reject"
-                                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                                        Tolak
-                                    </button>
-                                </div>
+                                class="inline-flex items-center px-3 py-2 border border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    Detail
+                                </a>
+                                <button type="submit" name="action" value="approve" 
+                                        class="inline-flex items-center px-3 py-2 border border-green-500 text-green-500 rounded-md hover:bg-green-500 hover:text-white transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Setujui
+                                </button>
+                                <button type="submit" name="action" value="reject"
+                                        class="inline-flex items-center px-3 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                    Tolak
+                                </button>
+                                                                </div>
                             </form>
                         </td>
                     </tr>
@@ -209,7 +219,7 @@
         {% endif %}
     </div>
 
-    <!-- Payment Verification Tab -->
+     <!-- Payment Verification Tab -->
     <div id="payment-tab" class="tab-content bg-white shadow-md rounded-lg p-6 hidden">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold">Verifikasi Pembayaran</h2>
@@ -347,7 +357,7 @@
             </table>
             {% else %}
             <p class="text-gray-500 text-center">Belum ada pembayaran yang diverifikasi.</p>
-            {% endif %}>
+            {% endif %}
         </div>
 
         <!-- Rejected Payments Section -->
@@ -565,6 +575,7 @@ document.addEventListener('keydown', function(e) {
         closePaymentProofModal();
     }
 })
+
 function showCancelModal(formUrl) {
     currentCancelUrl = formUrl;
     const modal = document.getElementById('cancelVerificationModal');
