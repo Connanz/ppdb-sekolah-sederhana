@@ -55,15 +55,6 @@
                     </p>
                 </div>
 
-                <!-- Document Preview -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Dokumen</label>
-                    <a href="{{ url_for('static', filename='uploads/' + form.document_path) }}"
-                       class="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                       target="_blank">
-                        Lihat Dokumen
-                    </a>
-                </div>
             </div>
         </div>
     </div>
@@ -96,12 +87,12 @@
                 {% endif %}
             </div>
 
-            <!-- Payment Proof -->
+             <!-- Payment Proof Section -->
             <div>
                 <h3 class="text-lg font-semibold mb-2">Bukti Pembayaran</h3>
                 {% if form.payment_proof %}
                 <div class="border rounded-lg p-4">
-                    <button onclick="showPaymentProof"('{{ url_for('static', filename='uploads/payment_proofs/' + form.payment_proof) }}')"
+                    <button onclick="showPaymentProof('{{ url_for('static', filename='uploads/payment_proofs/' + form.payment_proof) }}')"
                             class="flex items-center text-blue-600 hover:text-blue-800">
                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -114,7 +105,15 @@
                     <p class="text-sm text-gray-500 mt-2">
                         Status: 
                         <span class="{% if form.payment_status == 'verified' %}text-green-600{% elif form.payment_status == 'rejected' %}text-red-600{% else %}text-yellow-600{% endif %}">
-                            {{ form.payment_status }}
+                            {% if form.payment_status == 'verified' %}
+                                Terverifikasi
+                            {% elif form.payment_status == 'rejected' %}
+                                Ditolak
+                            {% elif form.payment_status == 'pending_verification' %}
+                                Menunggu Verifikasi
+                            {% else %}
+                                Belum Diverifikasi
+                            {% endif %}
                         </span>
                     </p>
                 </div>
@@ -126,22 +125,46 @@
     </div>
 </div>
 
+<!-- Modal for Payment Proof -->
+<div id="paymentProofModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 items-center justify-center">
+    <div class="bg-white p-4 rounded-lg max-w-4xl max-h-[90vh] overflow-auto relative">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Bukti Pembayaran</h3>
+            <button onclick="closePaymentProofModal()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <img id="paymentProofImage" class="max-w-full h-auto" src="" alt="Bukti Pembayaran">
+    </div>
+</div>
+
 <script>
 function showPaymentProof(imageUrl) {
     const modal = document.getElementById('paymentProofModal');
     const image = document.getElementById('paymentProofImage');
     image.src = imageUrl;
     modal.classList.remove('hidden');
+    modal.classList.add('flex');
 }
 
 function closePaymentProofModal() {
     const modal = document.getElementById('paymentProofModal');
     modal.classList.add('hidden');
+    modal.classList.remove('flex');
 }
 
 // Close modal when clicking outside
 document.getElementById('paymentProofModal').addEventListener('click', function(e) {
     if (e.target === this) {
+        closePaymentProofModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
         closePaymentProofModal();
     }
 });

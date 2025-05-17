@@ -58,26 +58,37 @@ def verify_form(form_id):
     action = request.form.get('action')
     note = request.form.get('note')
 
-    if action not in ['approve', 'reject']:
+    # Add 'cancel' to valid actions
+    if action not in ['approve', 'reject', 'cancel']:
         flash('Aksi tidak valid', 'error')
         return redirect(url_for('admin_bp.dashboard'))
 
     try:
-        # Update form status
-        form.status = 'approved' if action == 'approve' else 'rejected'
-        form.verified_by = current_user.id
-        form.verification_date = datetime.utcnow()
-        form.verification_note = note
-        form.is_verified = True if action == 'approve' else False
+        if action == 'cancel':
+            # Reset form status to pending
+            form.status = 'pending'
+            form.verified_by = None
+            form.verification_date = None
+            form.verification_note = None
+            form.is_verified = False
 
-        # Create notification for the user
-        notification_message = (
-            f"Pendaftaran untuk {form.student_name} telah " + 
-            ("disetujui" if action == 'approve' else "ditolak")
-        )
-        if note:
-            notification_message += f". Catatan: {note}"
+            notification_message = f"Status verifikasi pendaftaran untuk {form.student_name} telah dibatalkan dan kembali ke status menunggu verifikasi."
+        else:
+            # Existing logic for approve/reject
+            form.status = 'approved' if action == 'approve' else 'rejected'
+            form.verified_by = current_user.id
+            form.verification_date = datetime.utcnow()
+            form.verification_note = note
+            form.is_verified = True if action == 'approve' else False
 
+            notification_message = (
+                f"Pendaftaran untuk {form.student_name} telah " + 
+                ("disetujui" if action == 'approve' else "ditolak")
+            )
+            if note:
+                notification_message += f". Catatan: {note}"
+
+        # Create notification
         notification = Notification(
             user_id=form.user_id,
             message=notification_message
@@ -87,12 +98,15 @@ def verify_form(form_id):
         db.session.add(notification)
         db.session.commit()
 
-        flash(f'Formulir telah berhasil di{action}', 'success')
+        if action == 'cancel':
+            flash('Status verifikasi berhasil dibatalkan', 'success')
+        else:
+            flash(f'Formulir telah berhasil di{action}', 'success')
 
     except Exception as e:
         db.session.rollback()
-        flash('Terjadi kesalahan saat memverifikasi formulir', 'error')
-        current_app.logger.error(f"Error verifying form: {str(e)}")
+        flash('Terjadi kesalahan saat memproses verifikasi', 'error')
+        current_app.logger.error(f"Error processing form verification: {str(e)}")
 
     return redirect(url_for('admin_bp.dashboard'))
 

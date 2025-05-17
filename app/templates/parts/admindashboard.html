@@ -47,7 +47,7 @@
 
     <!-- Pending Applications Table -->
     <div id="pending-tab" class="tab-content bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Menunggu Verifikasi</h2>
+        <h2 class="text-xl font-semibold mb-4">Pendaftaran Menunggu Verifikasi</h2>
         {% if pending_forms %}
         <div class="overflow-x-auto">
             <table id="pendingTable" class="min-w-full table-auto display">
@@ -97,13 +97,13 @@
             </table>
         </div>
         {% else %}
-        <p class="text-gray-500">Tidak ada pendaftaran yang menunggu verifikasi.</p>
+        <p class="text-gray-500 text-center">Tidak ada pendaftaran yang menunggu verifikasi.</p>
         {% endif %}
     </div>
 
-    <!-- Approved Applications Table -->
+   <!-- Approved Applications Table -->
     <div id="approved-tab" class="tab-content bg-white shadow-md rounded-lg p-6 hidden">
-        <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Diterima</h2>
+        <h2 class="text-xl font-semibold mb-4">Pendaftaran Diterima</h2>
         {% if approved_forms %}
         <div class="overflow-x-auto">
             <table id="approvedTable" class="min-w-full table-auto display">
@@ -114,6 +114,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asal Sekolah</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Verifikasi</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -124,19 +125,39 @@
                         <td class="px-6 py-4">{{ form.school_name }}</td>
                         <td class="px-6 py-4">{{ form.verification_date.strftime('%d %B %Y') }}</td>
                         <td class="px-6 py-4">{{ form.verification_note or '-' }}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex space-x-2">
+                                <a href="{{ url_for('admin_bp.student_detail', form_id=form.id) }}" 
+                                   class="inline-flex items-center px-3 py-2 border border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    Detail Murid
+                                </a>
+                                <button type="button" 
+                                        onclick="showCancelModal('{{ url_for('admin_bp.verify_form', form_id=form.id) }}')"
+                                        class="inline-flex items-center px-3 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                    Batalkan Verifikasi
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
         {% else %}
-        <p class="text-gray-500">Belum ada pendaftaran yang diterima.</p>
+        <p class="text-gray-500 text-center">Belum ada pendaftaran yang diterima.</p>
         {% endif %}
     </div>
 
-    <!-- Rejected Applications Table -->
+     <!-- Rejected Applications Table -->
     <div id="rejected-tab" class="tab-content bg-white shadow-md rounded-lg p-6 hidden">
-        <h2 class="text-xl font-semibold mb-4">Pendaftaran yang Ditolak</h2>
+        <h2 class="text-xl font-semibold mb-4">Pendaftaran Ditolak</h2>
         {% if rejected_forms %}
         <div class="overflow-x-auto">
             <table id="rejectedTable" class="min-w-full table-auto display">
@@ -147,6 +168,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asal Sekolah</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Verifikasi</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alasan Penolakan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -157,13 +179,33 @@
                         <td class="px-6 py-4">{{ form.school_name }}</td>
                         <td class="px-6 py-4">{{ form.verification_date.strftime('%d %B %Y') }}</td>
                         <td class="px-6 py-4">{{ form.verification_note or '-' }}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex space-x-2">
+                                <a href="{{ url_for('admin_bp.student_detail', form_id=form.id) }}" 
+                                   class="inline-flex items-center px-3 py-2 border border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    Detail Murid
+                                </a>
+                                <button type="button" 
+                                        onclick="showCancelModal('{{ url_for('admin_bp.verify_form', form_id=form.id) }}')"
+                                        class="inline-flex items-center px-3 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                    Batalkan Verifikasi
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
         {% else %}
-        <p class="text-gray-500">Belum ada pendaftaran yang ditolak.</p>
+        <p class="text-gray-500 text-center">Belum ada pendaftaran yang ditolak.</p>
         {% endif %}
     </div>
 
@@ -348,6 +390,30 @@
     </div>
 </div>
 
+<!-- Add this modal markup just before the closing body tag -->
+<div id="cancelVerificationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 items-center justify-center">
+    <div class="bg-white rounded-lg p-6 max-w-sm mx-auto">
+        <div class="text-center">
+            <svg class="mx-auto mb-4 w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <h3 class="mb-4 text-lg font-medium text-gray-900">Konfirmasi Pembatalan</h3>
+            <p class="text-gray-500 mb-6">Anda yakin ingin membatalkan verifikasi ini?</p>
+            <form id="cancelVerificationForm" method="POST" class="flex justify-center space-x-4">
+                <button type="submit" 
+                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    Ya
+                </button>
+                <button type="button" 
+                        onclick="closeCancelModal()"
+                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                    Tidak
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% block extra_js %}
 <script>
 $(document).ready(function() {
@@ -497,6 +563,49 @@ function closePaymentProofModal() {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closePaymentProofModal();
+    }
+})
+function showCancelModal(formUrl) {
+    currentCancelUrl = formUrl;
+    const modal = document.getElementById('cancelVerificationModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    
+    // Set up the form
+    const form = document.getElementById('cancelVerificationForm');
+    form.action = formUrl;
+    form.innerHTML = `
+        <input type="hidden" name="action" value="cancel">
+        <button type="submit" 
+                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+            Ya
+        </button>
+        <button type="button" 
+                onclick="closeCancelModal()"
+                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
+            Tidak
+        </button>
+    `;
+}
+
+function closeCancelModal() {
+    const modal = document.getElementById('cancelVerificationModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    currentCancelUrl = '';
+}
+
+// Close modal when clicking outside
+document.getElementById('cancelVerificationModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeCancelModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeCancelModal();
     }
 });
 </script>
