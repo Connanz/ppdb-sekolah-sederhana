@@ -1,0 +1,158 @@
+{% extends "adminbase.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-8">Laporan Pendaftaran Siswa</h1>
+
+    <!-- Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-700">Total Pendaftar</h3>
+            <p class="text-3xl font-bold text-blue-600">{{ total_registrations }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-700">Rentang Usia</h3>
+            <p class="text-3xl font-bold text-blue-600">{{ min_age }} - {{ max_age }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-700">Rata-rata Usia</h3>
+            <p class="text-3xl font-bold text-blue-600">{{ avg_age }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-700">Jumlah Sekolah Asal</h3>
+            <p class="text-3xl font-bold text-blue-600">{{ school_stats|length }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Age Distribution Chart -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-4">Distribusi Usia Pendaftar</h2>
+            <div class="h-64">
+                <canvas id="ageChart"></canvas>
+            </div>
+        </div>
+
+        <!-- School Distribution Chart -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-4">Asal Sekolah Terbanyak</h2>
+            <div class="h-64">
+                <canvas id="schoolChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed School Statistics Table -->
+    <div class="mt-8 bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">Detail Asal Sekolah</h2>
+        <div class="overflow-x-auto">
+            <table id="schoolTable" class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Nama Sekolah
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Jumlah Pendaftar
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Persentase
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for school, count in school_stats %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ school }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ count }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {{ "%.1f"|format(count/total_registrations*100) }}%
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Age Distribution Chart
+    const ageCtx = document.getElementById('ageChart').getContext('2d');
+    new Chart(ageCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ age_stats|map(attribute=0)|list|tojson }},
+            datasets: [{
+                label: 'Jumlah Siswa',
+                data: {{ age_stats|map(attribute=1)|list|tojson }},
+                backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                borderColor: 'rgb(59, 130, 246)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+
+    // School Distribution Chart
+    const schoolCtx = document.getElementById('schoolChart').getContext('2d');
+    new Chart(schoolCtx, {
+        type: 'pie',
+        data: {
+            labels: {{ top_schools|map(attribute=0)|list|tojson }},
+            datasets: [{
+                data: {{ top_schools|map(attribute=1)|list|tojson }},
+                backgroundColor: [
+                    'rgba(59, 130, 246, 0.5)',
+                    'rgba(16, 185, 129, 0.5)',
+                    'rgba(239, 68, 68, 0.5)',
+                    'rgba(245, 158, 11, 0.5)',
+                    'rgba(99, 102, 241, 0.5)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+
+    // Initialize DataTable
+    $('#schoolTable').DataTable({
+        pageLength: 10,
+        order: [[1, 'desc']],
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+            infoFiltered: "(disaring dari _MAX_ total data)",
+            paginate: {
+                first: "Pertama",
+                last: "Terakhir",
+                next: "Selanjutnya",
+                previous: "Sebelumnya"
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

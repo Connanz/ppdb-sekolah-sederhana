@@ -4,6 +4,9 @@ from app.models import Form, User, UserRole, Notification
 from app import db
 from datetime import datetime
 from functools import wraps
+from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy import func
+from collections import Counter
 
 # Inisialisasi blueprint untuk admin
 admin_bp = Blueprint('admin_bp', __name__, template_folder='templates')
@@ -160,3 +163,84 @@ def student_detail(form_id):
         
     form = Form.query.get_or_404(form_id)
     return render_template('parts/student_detail.html', form=form)
+
+@admin_bp.route('/profile')
+@login_required
+@admin_required
+def profile():
+    return render_template('parts/profile_admin.html')
+
+@admin_bp.route('/change-password', methods=['POST'])
+@login_required
+@admin_required
+def change_password():
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+    confirm_password = request.form.get('confirm_password')
+
+    # Verify current password
+    if not check_password_hash(current_user.password, current_password):
+        flash('Password saat ini salah!', 'error')
+        return redirect(url_for('admin_bp.profile'))
+
+    # Verify new passwords match
+    if new_password != confirm_password:
+        flash('Password baru dan konfirmasi password tidak cocok!', 'error')
+        return redirect(url_for('admin_bp.profile'))
+
+    try:
+        # Update password
+        current_user.password = generate_password_hash(new_password)
+        db.session.commit()
+        flash('Password berhasil diubah!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Error changing password: {str(e)}")
+        flash('Terjadi kesalahan saat mengubah password', 'error')
+
+    return redirect(url_for('admin_bp.profile'))
+
+@admin_bp.route('/laporan')
+@login_required
+@admin_required
+def laporan():
+    # Get total registrations
+    total_registrations = Form.query.count()
+    
+    # Get age statistics as list of tuples
+    age_stats = db.session.query(
+        Form.student_age,
+        func.count(Form.student_age).label('count')
+    ).group_by(Form.student_age).order_by(Form.student_age).all()
+    
+    # Calculate age statistics
+    if age_stats:
+        min_age = min(age[0] for age in age_stats)
+        max_age = max(age[0] for age in age_stats)
+        total_students = sum(count for _, count in age_stats)
+        avg_age = sum(age * count for age, count in age_stats) / total_students
+    else:
+        min_age = max_age = avg_age = 0
+        total_students = 0
+
+    # Get school statistics as list of tuples
+    school_stats = db.session.query(
+        Form.school_name,
+        func.count(Form.school_name).label('count')
+    ).group_by(Form.school_name).order_by(func.count(Form.school_name).desc()).all()
+    
+    # Get status statistics
+    status_counts = db.session.query(
+        Form.status,
+        func.count(Form.status)
+    ).group_by(Form.status).all()
+    
+    return render_template('parts/laporan.html',
+                         total_registrations=total_registrations,
+                         age_stats=age_stats,
+                         min_age=min_age,
+                         max_age=max_age,
+                         avg_age=round(avg_age, 1),
+                         school_stats=school_stats,
+                         top_schools=school_stats[:5] if school_stats else [],
+                         status_stats=dict(status_counts))
