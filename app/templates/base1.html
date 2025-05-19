@@ -22,7 +22,7 @@
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="{{ url_for('index_bp.index') }}" class="hover:text-blue-400 transition-colors">Halaman Utama</a>
-                    <a href="#" class="hover:text-blue-400 transition-colors">Persyaratan</a>
+                    <a href="{{ url_for('index_bp.persyaratan') }}" class="hover:text-blue-400 transition-colors">Persyaratan</a>
                     <a href="{{ url_for('form_bp.pendaftaran') }}" class="hover:text-blue-400 transition-colors">Pendaftaran</a>
                                         {% if current_user.is_authenticated %}
                         {% set latest = latest_form() if latest_form is callable else latest_form %}
