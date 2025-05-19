@@ -2,7 +2,18 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-8">Laporan Pendaftaran Siswa</h1>
+    <!-- Add this button after the title -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-2xl font-bold">Laporan Pendaftaran Siswa</h1>
+        <button onclick="exportToExcel()" 
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Export ke Excel
+        </button>
+    </div>
 
     <!-- Overview Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -154,5 +165,67 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function exportToExcel() {
+    // Create workbook
+    const wb = XLSX.utils.book_new();
+    
+    // Create summary worksheet
+    const summaryData = {
+        'Total Pendaftar': {{ total_registrations }},
+        'Rentang Usia': '{{ min_age }} - {{ max_age }}',
+        'Rata-rata Usia': {{ avg_age }},
+        'Jumlah Sekolah Asal': {{ school_stats|length }}
+    };
+    const summaryWS = XLSX.utils.json_to_sheet([summaryData]);
+
+    // Convert school statistics to worksheet data
+    const schoolData = {{ school_stats|tojson }}.map(([school, count]) => ({
+        'Nama Sekolah': school,
+        'Jumlah Pendaftar': count,
+        'Persentase': ((count/{{ total_registrations }}*100).toFixed(1) + '%')
+    }));
+    const schoolWS = XLSX.utils.json_to_sheet(schoolData);
+
+    // Convert age statistics to worksheet data
+    const ageData = {{ age_stats|tojson }}.map(([age, count]) => ({
+        'Usia': age,
+        'Jumlah Siswa': count
+    }));
+    const ageWS = XLSX.utils.json_to_sheet(ageData);
+
+    // Add worksheets to workbook
+    XLSX.utils.book_append_sheet(wb, summaryWS, "Ringkasan");
+    XLSX.utils.book_append_sheet(wb, schoolWS, "Data Sekolah");
+    XLSX.utils.book_append_sheet(wb, ageWS, "Distribusi Usia");
+
+    // Auto-adjust columns for each worksheet
+    autoAdjustColumns(summaryWS);
+    autoAdjustColumns(schoolWS);
+    autoAdjustColumns(ageWS);
+
+    // Generate Excel file
+    const today = new Date().toISOString().slice(0,10);
+    XLSX.writeFile(wb, `Laporan_Pendaftaran_${today}.xlsx`);
+}
+
+// Add column width configuration
+function autoAdjustColumns(worksheet) {
+    const range = XLSX.utils.decode_range(worksheet['!ref']);
+    const widths = [];
+
+    for(let C = range.s.c; C <= range.e.c; ++C) {
+        let max = 0;
+        for(let R = range.s.r; R <= range.e.r; ++R) {
+            const cell = worksheet[XLSX.utils.encode_cell({r:R, c:C})];
+            if(cell && cell.v) {
+                const length = cell.v.toString().length;
+                if(length > max) max = length;
+            }
+        }
+        widths[C] = max + 2;
+    }
+    worksheet['!cols'] = widths.map(w => ({wch:w}));
+}
 </script>
 {% endblock %}

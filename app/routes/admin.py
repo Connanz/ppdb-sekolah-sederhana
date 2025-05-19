@@ -208,32 +208,41 @@ def laporan():
     total_registrations = Form.query.count()
     
     # Get age statistics as list of tuples
-    age_stats = db.session.query(
+    age_stats_query = db.session.query(
         Form.student_age,
         func.count(Form.student_age).label('count')
     ).group_by(Form.student_age).order_by(Form.student_age).all()
     
+    # Convert SQLAlchemy Row objects to lists
+    age_stats = [[row[0], row[1]] for row in age_stats_query]
+    
     # Calculate age statistics
     if age_stats:
-        min_age = min(age[0] for age in age_stats)
-        max_age = max(age[0] for age in age_stats)
-        total_students = sum(count for _, count in age_stats)
-        avg_age = sum(age * count for age, count in age_stats) / total_students
+        min_age = min(row[0] for row in age_stats)
+        max_age = max(row[0] for row in age_stats)
+        total_students = sum(row[1] for row in age_stats)
+        avg_age = sum(row[0] * row[1] for row in age_stats) / total_students
     else:
         min_age = max_age = avg_age = 0
         total_students = 0
 
     # Get school statistics as list of tuples
-    school_stats = db.session.query(
+    school_stats_query = db.session.query(
         Form.school_name,
         func.count(Form.school_name).label('count')
     ).group_by(Form.school_name).order_by(func.count(Form.school_name).desc()).all()
     
+    # Convert SQLAlchemy Row objects to lists
+    school_stats = [[row[0], row[1]] for row in school_stats_query]
+    
+    # Get top 5 schools for pie chart
+    top_schools = school_stats[:5] if school_stats else []
+    
     # Get status statistics
-    status_counts = db.session.query(
+    status_counts = dict(db.session.query(
         Form.status,
         func.count(Form.status)
-    ).group_by(Form.status).all()
+    ).group_by(Form.status).all())
     
     return render_template('parts/laporan.html',
                          total_registrations=total_registrations,
@@ -242,5 +251,5 @@ def laporan():
                          max_age=max_age,
                          avg_age=round(avg_age, 1),
                          school_stats=school_stats,
-                         top_schools=school_stats[:5] if school_stats else [],
-                         status_stats=dict(status_counts))
+                         top_schools=top_schools,
+                         status_stats=status_counts)
