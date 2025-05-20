@@ -147,16 +147,17 @@ def verify_payment(form_id):
     try:
         if action == 'verify':
             form.payment_status = 'verified'
+            form.payment_verified_at = datetime.utcnow()
+            form.payment_verified_by = current_user.id
+            form.payment_note = note  # Catatan admin bagi pembayaran yang diterima
             message = "Pembayaran Anda telah diverifikasi"
         else:
             form.payment_status = 'rejected'
+            form.payment_note = note  # Catatan admin bagi pembayaran yang ditolak
             message = "Pembayaran Anda ditolak"
 
         if note:
             message += f". Catatan: {note}"
-
-        form.payment_verified_at = datetime.utcnow()
-        form.payment_verified_by = current_user.id
 
         # Create notification
         notification = Notification(

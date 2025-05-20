@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <!-- Awal dari app/templates/index.html -->
-    <!-- Sesi Pendaftaran Siswa Baru -->
+    <!-- Sesi Pendaftaran Murid Baru -->
     <div class="relative bg-gray-900 text-white">
         <div class="absolute inset-0 bg-opacity-90 bg-gray-900"></div>
         <div class="container mx-auto px-4 py-24 relative">
             <div class="max-w-4xl">
-                <h1 class="text-5xl font-bold mb-6">Pendaftaran Siswa Baru</h1>
+                <h1 class="text-5xl font-bold mb-6">Penerimaan Peserta Didik Baru</h1>
                 <p class="text-xl text-gray-300 mb-8">Ikuti langkah - langkah dibawah ini untuk melakukan pendaftaran :</p>
                 
                 <div class="mb-12 space-y-6">
@@ -14,38 +14,40 @@
                         <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <span class="text-white font-bold">1</span>
                         </div>
-                        <p class="text-lg">Buat akun siswa melalui menu pendaftaran</p>
+                        <p class="text-lg">Registrasi dan masuk menggunakan akun murid melalui menu daftar sekarang</p>
                     </div>
                     
                     <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <span class="text-white font-bold">2</span>
                         </div>
-                        <p class="text-lg">Isi data diri dengan lengkap serta jelas</p>
+                        <p class="text-lg">Pergi ke menu pendaftaran lalu isi data diri dengan lengkap serta jelas</p>
                     </div>
                     
                     <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <span class="text-white font-bold">3</span>
                         </div>
-                        <p class="text-lg">Upload foto maupun dokumen yang dibutuhkan lalu kirim</p>
+                        <p class="text-lg">Selesaikan pembayaran lalu tunggu verifikasi dari admin</p>
                     </div>
                 </div>
     
                 <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-                    <a href="{{ url_for('form_bp.pendaftaran') }}">
-                    <button   class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg transition-colors flex items-center justify-center">
+                    <a href="{{ url_for('form_bp.pendaftaran') }}" class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg transition-colors flex items-center justify-center">
                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                         </svg>
-                        Mulai Pendaftaran 
-                    </button>
+                        Mulai Pendaftaran
                     </a>
-                    <button class="border border-gray-300 hover:bg-gray-800 px-8 py-4 rounded-lg text-lg transition-colors">
-                        Lihat persyaratan
-                    </button>
+                    
+                    <a href="{{ url_for('index_bp.persyaratan') }}" class="border border-gray-300 hover:border-gray-400 px-8 py-4 rounded-lg text-lg transition-all duration-300 flex items-center justify-center hover:bg-gray-50/30">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Lihat Persyaratan
+                    </a>
                 </div>
-    
+
                 <div class="mt-8 p-4 bg-gray-800 rounded-lg">
                     <div class="flex items-center space-x-3">
                         <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,31 +98,124 @@
     </div>
 
     <!-- Bagian Program Unggulan -->
-    <div class="bg-gray-50 py-16">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Program Unggulan</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="md:flex">
-                        <div class="md:flex-shrink-0">
-                            <img class="h-48 w-full object-cover md:w-48" src="{{ url_for('static', filename='Software Engineering.png') }}" alt="Program">
+<div class="bg-gray-50 py-16">
+    <div class="container mx-auto px-4 relative">
+        <h2 class="text-3xl font-bold text-center mb-12">Program Unggulan</h2>
+        
+        <div class="relative group">
+            <!-- Carousel Container -->
+            <div class="overflow-hidden">
+                <div id="programCarousel" class="flex transition-transform duration-500 ease-in-out">
+                    <!-- Item 1 -->
+                    <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow h-full">
+                            <div class="md:flex h-full">
+                                <div class="md:flex-shrink-0">
+                                    <img class="h-48 w-full object-cover md:w-48" 
+                                         src="{{ url_for('static', filename='Ilmu Komputer.png') }}" 
+                                         alt="Ilmu Komputer">
+                                </div>
+                                <div class="p-6 flex flex-col justify-between">
+                                    <div>
+                                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-2">STEM</span>
+                                        <h3 class="text-xl font-bold mb-2">Ilmu Komputer</h3>
+                                        <p class="text-gray-600">Pengembangan perangkat lunak dan sistem kecerdasan buatan modern</p>
+                                    </div>
+                                    <a href="#" class="mt-4 text-blue-600 hover:text-blue-700 flex items-center">
+                                        Lihat Detail
+                                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-8">
-                            <div class="uppercase text-sm text-blue-600 font-semibold">Program Unggulan 1</div>
-                            <h3 class="text-xl font-bold mt-2 mb-4">Jurusan Ilmu Komputer</h3>
-                            <p class="text-gray-600">Menggabungkan teori yang mendalam dengan praktik dalam pembuatan aplikasi.</p>
-                            <button class="mt-4 text-blue-600 hover:text-blue-700 flex items-center">
-                                Lihat Program
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </button>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow h-full">
+                            <div class="md:flex h-full">
+                                <div class="md:flex-shrink-0">
+                                    <img class="h-48 w-full object-cover md:w-48" 
+                                         src="{{ url_for('static', filename='Bisnis.jpg') }}" 
+                                         alt="Bisnis">
+                                </div>
+                                <div class="p-6 flex flex-col justify-between">
+                                    <div>
+                                        <span class="inline-block px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-medium mb-2">BISNIS</span>
+                                        <h3 class="text-xl font-bold mb-2">Manajemen Bisnis</h3>
+                                        <p class="text-gray-600">Strategi manajemen modern dan pengembangan usaha kreatif</p>
+                                    </div>
+                                    <a href="#" class="mt-4 text-green-600 hover:text-green-700 flex items-center">
+                                        Lihat Detail
+                                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] px-4">
+                        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow h-full">
+                            <div class="md:flex h-full">
+                                <div class="md:flex-shrink-0">
+                                    <img class="h-48 w-full object-cover md:w-48" 
+                                         src="{{ url_for('static', filename='Teknik.jpg') }}" 
+                                         alt="Teknik">
+                                </div>
+                                <div class="p-6 flex flex-col justify-between">
+                                    <div>
+                                        <span class="inline-block px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-medium mb-2">TEKNIK</span>
+                                        <h3 class="text-xl font-bold mb-2">Teknik Industri</h3>
+                                        <p class="text-gray-600">Optimalisasi sistem produksi dan manajemen rantai pasok</p>
+                                    </div>
+                                    <a href="#" class="mt-4 text-orange-600 hover:text-orange-700 flex items-center">
+                                        Lihat Detail
+                                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- Navigation Buttons -->
+            <button class="absolute top-1/2 -translate-y-1/2 left-0 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg transition-all -translate-x-4 group-hover:translate-x-2" 
+                    onclick="slide(-1)" aria-label="Previous">
+                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            
+            <button class="absolute top-1/2 -translate-y-1/2 right-0 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg transition-all translate-x-4 group-hover:-translate-x-2" 
+                    onclick="slide(1)" aria-label="Next">
+                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
 
-                
+<script>
+let currentSlide = 0;
+const carousel = document.getElementById('programCarousel');
+const items = document.querySelectorAll('#programCarousel > div');
+const itemWidth = items[0].offsetWidth;
+
+function slide(direction) {
+    currentSlide = (currentSlide + direction + items.length) % items.length;
+    const offset = -currentSlide * itemWidth;
+    carousel.style.transform = `translateX(${offset}px)`;
+}
+</script>
                 
                 <!-- Repeat similar structure for other programs -->
             </div>
