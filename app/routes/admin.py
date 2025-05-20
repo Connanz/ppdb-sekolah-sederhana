@@ -7,6 +7,7 @@ from functools import wraps
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import func
 from collections import Counter
+from app.utils.email import send_verification_email
 
 # Inisialisasi blueprint untuk admin
 admin_bp = Blueprint('admin_bp', __name__, template_folder='templates')
@@ -53,14 +54,35 @@ def dashboard():
                          rejected_count=rejected_count)
 
 # rute untuk memverifikasi formulir pendaftaran oleh admin dari data yang dikirmkan oleh user/siswa-siswi
-@admin_bp.route('/verify/<int:form_id>', methods=['POST'])
+@admin_bp.route('/verify-form/<int:form_id>', methods=['POST'])
 @login_required
 @admin_required
 def verify_form(form_id):
     form = Form.query.get_or_404(form_id)
     action = request.form.get('action')
-    note = request.form.get('note')
+    note = request.form.get('note', '')
 
+    if action == 'approve':
+        form.status = 'approved'
+        form.verified_by = current_user.id
+        form.verification_date = datetime.utcnow()
+        form.verification_note = note
+        form.is_verified = True
+        
+        # Buat notifikasi
+        notification = form.create_notification(
+            'Pendaftaran Anda telah diverifikasi dan diterima.'
+        )
+        
+        # Kirim email verifikasi
+        if send_verification_email(form.student_email, form.student_name):
+            flash('Form diverifikasi dan email pemberitahuan terkirim', 'success')
+        else:
+            flash('Form diverifikasi tetapi gagal mengirim email', 'warning')
+            
+        db.session.commit()
+        return redirect(url_for('admin_bp.dashboard'))
+        
     # Add 'cancel' to valid actions
     if action not in ['approve', 'reject', 'cancel']:
         flash('Aksi tidak valid', 'error')
