@@ -88,9 +88,9 @@ def verify_form(form_id):
                 # Send notification to admin
                 if current_user.email:  # Check if admin has email
                     send_admin_notification(current_user.email, form.student_name)
-                flash('Form diverifikasi dan email pemberitahuan terkirim', 'success')
+                flash('Formulir diverifikasi dan email pemberitahuan terkirim', 'success')
             else:
-                flash('Form diverifikasi tetapi gagal mengirim email', 'warning')
+                flash('Formulir diverifikasi tetapi gagal mengirim email', 'warning')
 
         elif action == 'reject':
             form.status = 'rejected'
@@ -174,7 +174,7 @@ def verify_payment(form_id):
 
     return redirect(url_for('admin_bp.dashboard'))
 
-# Detail User/siswa-siswi yang telah mengirimkan formulir pendaftaran, namun ada verifikasi yang menunjukkan hanya admin yang dapat melihat detail siswa-siswi
+# Detail User/peserta didik yang telah mengirimkan formulir pendaftaran, namun ada verifikasi yang menunjukkan hanya admin yang dapat melihat detail peserta didik baru
 @admin_bp.route('/student/<int:form_id>')
 @login_required
 def student_detail(form_id):
@@ -185,12 +185,14 @@ def student_detail(form_id):
     form = Form.query.get_or_404(form_id)
     return render_template('parts/student_detail.html', form=form)
 
+# Detail tentang admin
 @admin_bp.route('/profile')
 @login_required
 @admin_required
 def profile():
     return render_template('parts/profile_admin.html')
 
+# Rute untuk mengubah password admin dengan memasukkan password saat ini dan menggantinya dengan password baru
 @admin_bp.route('/change-password', methods=['POST'])
 @login_required
 @admin_required
@@ -199,18 +201,18 @@ def change_password():
     new_password = request.form.get('new_password')
     confirm_password = request.form.get('confirm_password')
 
-    # Verify current password
+    # Verifikasi Password saat ini
     if not check_password_hash(current_user.password, current_password):
         flash('Password saat ini salah!', 'error')
         return redirect(url_for('admin_bp.profile'))
 
-    # Verify new passwords match
+    # Verifikasi password baru pengganti password saat ini
     if new_password != confirm_password:
         flash('Password baru dan konfirmasi password tidak cocok!', 'error')
         return redirect(url_for('admin_bp.profile'))
 
     try:
-        # Update password
+        # Memperbarui Password
         current_user.password = generate_password_hash(new_password)
         db.session.commit()
         flash('Password berhasil diubah!', 'success')
