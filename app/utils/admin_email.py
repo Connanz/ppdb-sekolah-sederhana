@@ -2,6 +2,7 @@
 from flask import current_app
 from .email_config import send_email
 from datetime import datetime
+from .filters import format_indonesian_date
 
 def send_admin_notification(admin_email, student_name):
     try:
@@ -23,7 +24,7 @@ def send_admin_notification(admin_email, student_name):
         <div style="background-color: #ffffff; padding: 15px; border-left: 4px solid #0066cc; margin: 20px 0;">
             <p style="margin: 0;"><strong>Informasi Peserta:</strong></p>
             <p style="margin: 5px 0;">Nama: {student_name}</p>
-            <p style="margin: 5px 0;">Tanggal Diterima: {datetime.now().strftime('%d %B %Y')}</p>
+            <p style="margin: 5px 0;">Tanggal Diterima: {format_indonesian_date(datetime.now())}</p>
             <p style="margin: 5px 0;">Status: <span style="color: #28a745;">Terverifikasi</span></p>
         </div>
         

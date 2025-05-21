@@ -2,6 +2,7 @@
 from flask import current_app
 from .email_config import send_email
 from datetime import datetime
+from .filters import format_indonesian_date
 
 def send_verification_email(user_email, student_name):
     try:
@@ -24,7 +25,7 @@ def send_verification_email(user_email, student_name):
         
         <div style="background-color: #ffffff; padding: 15px; border-left: 4px solid #0066cc; margin: 20px 0;">
             <p style="margin: 0;"><strong>Status:</strong> Terverifikasi</p>
-            <p style="margin: 5px 0;"><strong>Tanggal:</strong> {datetime.now().strftime('%d %B %Y')}</p>
+            <p style="margin: 5px 0;"><strong>Tanggal:</strong> {format_indonesian_date(datetime.now())}</p>
         </div>
         
         <p>Langkah selanjutnya:</p>
