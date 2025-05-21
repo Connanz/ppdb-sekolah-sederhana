@@ -446,3 +446,58 @@ student_bp = Blueprint('student_bp', __name__, template_folder='templates')
 def student_dashboard():
     """Render the student dashboard."""
     return render_template('parts/studentdashboard.html', user=current_user)
+
+
+< - old email.py - >
+# Library untuk mengirim email verifikasi pendaftaran siswa baru ke email peserta didik yang terverifikasi
+from flask import current_app
+from .email_config import send_email
+
+def send_verification_email(user_email, student_name):
+    try:
+        subject = 'Pendaftaran Anda Telah Diverifikasi'
+        message = f"""
+        Yth. {student_name},
+        
+        Selamat! Anda telah diterima dalam proses pendaftaran siswa baru.
+        Pembayaran Anda telah diverifikasi dan pendaftaran Anda telah dikonfirmasi.
+        
+        Silahkan login ke akun Anda untuk melihat informasi lebih lanjut.
+        
+        Terima kasih,
+        Admin PPDB
+        """
+        
+        return send_email(user_email, subject, message)
+        
+    except Exception as e:
+        current_app.logger.error(f"Error sending verification email: {str(e)}")
+        return False
+
+
+<- old admin_email.py ->
+from flask import current_app
+from .email_config import send_email
+
+def send_admin_notification(admin_email, student_name):
+    try:
+        subject = 'Peserta Didik Baru Terdaftar'
+        message = f"""
+        Kepada Admin,
+        
+        Dengan ini diberitahukan bahwa:
+        
+        Nama Siswa: {student_name}
+        
+        telah berhasil menjadi peserta didik baru di sekolah kita.
+        Mohon untuk segera mempersiapkan administrasi yang diperlukan.
+        
+        Terima kasih,
+        Sistem PPDB
+        """
+        
+        return send_email(admin_email, subject, message)
+        
+    except Exception as e:
+        current_app.logger.error(f"Error sending admin notification: {str(e)}")
+        return False

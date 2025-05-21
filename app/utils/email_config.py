@@ -13,14 +13,14 @@ class EmailConfig:
 
 def send_email(to_email, subject, message):
     try:
-        # Setup MIME
-        msg = MIMEMultipart()
-        msg['From'] = EmailConfig.SMTP_USERNAME
+        msg = MIMEMultipart('alternative')
+        msg['From'] = f'PPDB Sekolah <{EmailConfig.SMTP_USERNAME}>'
         msg['To'] = to_email
         msg['Subject'] = subject
 
-        # Add body
-        msg.attach(MIMEText(message, 'plain'))
+        # Convert message to HTML MIMEText
+        html_part = MIMEText(message, 'html', 'utf-8')
+        msg.attach(html_part)
 
         # Create SMTP session
         server = smtplib.SMTP(EmailConfig.SMTP_SERVER, EmailConfig.SMTP_PORT)
@@ -30,8 +30,7 @@ def send_email(to_email, subject, message):
         server.login(EmailConfig.SMTP_USERNAME, EmailConfig.SMTP_PASSWORD)
         
         # Send email
-        text = msg.as_string()
-        server.sendmail(EmailConfig.SMTP_USERNAME, to_email, text)
+        server.send_message(msg)
         
         # Close session
         server.quit()
