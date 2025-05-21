@@ -32,7 +32,7 @@
                             </div>
                             <div>
                                 <label class="text-sm font-medium text-gray-500">Bergabung Sejak</label>
-                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ current_user.created_at.strftime('%d %B %Y') }}</p>
+                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ current_user.created_at|indonesian_date }}</p>
                             </div>
                         </div>
                     </div>

@@ -12,7 +12,14 @@
                         <form method="POST" enctype="multipart/form-data" class="space-y-6">
                             <!-- Foto Profil -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Foto Profil</label>
+                                <div class="flex items-center mb-1">
+                                    <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <label class="block text-sm font-medium text-gray-700">Foto Profil</label>
+                                </div>
                                 <div class="mt-1 flex items-center">
                                     <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
                                         <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
@@ -27,35 +34,70 @@
 
                             <!-- Nama Lengkap -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                                <div class="flex items-center mb-1">
+                                    <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                                </div>
                                 <input type="text" name="student_name" required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <!-- Umur -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Umur</label>
+                                <div class="flex items-center mb-1">
+                                    <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <label class="block text-sm font-medium text-gray-700">Umur</label>
+                                </div>
                                 <input type="number" name="student_age" required min="0" max="100"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <!-- Email -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Alamat Email</label>
+                                <div class="flex items-center mb-1">
+                                    <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    <label class="block text-sm font-medium text-gray-700">Alamat Email</label>
+                                </div>
                                 <input type="email" name="student_email" required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <!-- Asal Sekolah -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Asal Sekolah</label>
+                                <div class="flex items-center mb-1">
+                                    <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    </svg>
+                                    <label class="block text-sm font-medium text-gray-700">Asal Sekolah</label>
+                                </div>
                                 <input type="text" name="school_name" required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <!-- Dokumen -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Dokumen Pendukung</label>
+                                <div class="flex items-center mb-1">
+                                    <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <label class="block text-sm font-medium text-gray-700">Dokumen Pendukung</label>
+                                </div>
                                 <input type="file" name="document" accept=".pdf,.jpg,.jpeg,.png" required
                                     class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 <p class="mt-2 text-xs text-gray-500">Format: PDF, JPEG, PNG (Maksimal. 5MB)</p>
