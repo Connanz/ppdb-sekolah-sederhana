@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import func
 from collections import Counter
 from app.utils.email import send_verification_email
+from app.utils.admin_email import send_admin_notification
 from app.utils.filters import format_indonesian_date
 
 # Inisialisasi blueprint untuk admin
@@ -64,34 +65,48 @@ def verify_form(form_id):
     action = request.form.get('action')
     note = request.form.get('note', '')
 
-    if action == 'approve':
-        form.status = 'approved'
-        form.verified_by = current_user.id
-        form.verification_date = datetime.utcnow()
-        form.verification_note = note
-        form.is_verified = True
-        
-        # Buat notifikasi
-        notification = form.create_notification(
-            'Pendaftaran Anda telah diverifikasi dan diterima.'
-        )
-        
-        # Kirim email verifikasi
-        if send_verification_email(form.student_email, form.student_name):
-            flash('Form diverifikasi dan email pemberitahuan terkirim', 'success')
-        else:
-            flash('Form diverifikasi tetapi gagal mengirim email', 'warning')
-            
-        db.session.commit()
-        return redirect(url_for('admin_bp.dashboard'))
-        
-    # Add 'cancel' to valid actions
+    # Check for valid actions first
     if action not in ['approve', 'reject', 'cancel']:
         flash('Aksi tidak valid', 'error')
         return redirect(url_for('admin_bp.dashboard'))
 
     try:
-        if action == 'cancel':
+        if action == 'approve':
+            form.status = 'approved'
+            form.verified_by = current_user.id
+            form.verification_date = datetime.utcnow()
+            form.verification_note = note
+            form.is_verified = True
+            
+            # Create notification for student
+            notification = form.create_notification(
+                'Pendaftaran Anda telah diverifikasi dan diterima.'
+            )
+            
+            # Send email to student
+            if send_verification_email(form.student_email, form.student_name):
+                # Send notification to admin
+                if current_user.email:  # Check if admin has email
+                    send_admin_notification(current_user.email, form.student_name)
+                flash('Form diverifikasi dan email pemberitahuan terkirim', 'success')
+            else:
+                flash('Form diverifikasi tetapi gagal mengirim email', 'warning')
+
+        elif action == 'reject':
+            form.status = 'rejected'
+            form.verified_by = current_user.id
+            form.verification_date = datetime.utcnow()
+            form.verification_note = note
+            form.is_verified = False
+            
+            notification_message = f"Pendaftaran Anda telah ditolak"
+            if note:
+                notification_message += f". Catatan: {note}"
+            
+            # Create notification
+            notification = form.create_notification(notification_message)
+
+        else:  # action == 'cancel'
             # Reset form status to pending
             form.status = 'pending'
             form.verified_by = None
@@ -100,29 +115,10 @@ def verify_form(form_id):
             form.is_verified = False
 
             notification_message = f"Status verifikasi pendaftaran untuk {form.student_name} telah dibatalkan dan kembali ke status menunggu verifikasi."
-        else:
-            # Existing logic for approve/reject
-            form.status = 'approved' if action == 'approve' else 'rejected'
-            form.verified_by = current_user.id
-            form.verification_date = datetime.utcnow()
-            form.verification_note = note
-            form.is_verified = True if action == 'approve' else False
+            # Create notification
+            notification = form.create_notification(notification_message)
 
-            notification_message = (
-                f"Pendaftaran untuk {form.student_name} telah " + 
-                ("disetujui" if action == 'approve' else "ditolak")
-            )
-            if note:
-                notification_message += f". Catatan: {note}"
-
-        # Create notification
-        notification = Notification(
-            user_id=form.user_id,
-            message=notification_message
-        )
-
-        # Save changes
-        db.session.add(notification)
+        # Save all changes
         db.session.commit()
 
         if action == 'cancel':

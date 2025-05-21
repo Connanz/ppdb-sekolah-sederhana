@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="mt-8 text-center">
-                    <a href="{{ url_for('payment_bp.payment_process') }}" 
+                    <a href="{{ url_for('payment_bp.payment_process', form_id=latest_form.id) }}" 
                        class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                         ⇒ Lanjutkan Ke Pembayaran
                     </a>

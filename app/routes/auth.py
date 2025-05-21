@@ -11,17 +11,29 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        email = request.form.get('email')
         
         user = User.query.filter_by(username=username).first()
         
         if user and check_password_hash(user.password, password):
-            login_user(user)
-            # Redirect to the appropriate dashboard based on user role
-            return redirect(url_for(user.get_dashboard()))
+            if user.is_admin():
+                if not email and not user.email:
+                    flash('Admin harus mengisi alamat email', 'error')
+                    return render_template('auth/login.html', show_admin_email=True)
+                
+                if email:
+                    user.email = email
+                    db.session.commit()
             
-        flash('Invalid username or password', 'error')
+            login_user(user)
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for(user.get_dashboard()))
+            
+        flash('Username atau password salah', 'error')
     
-    return render_template('auth/login.html')
+    # Check if admin login is attempted
+    show_admin_email = 'admin' in request.args.get('next', '')
+    return render_template('auth/login.html', show_admin_email=show_admin_email)
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():

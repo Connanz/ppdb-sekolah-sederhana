@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(20), nullable=False, default=UserRole.STUDENT.value)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    email = db.Column(db.String(120), unique=True, nullable=True)
 
     # Forms created/submitted by the user (students)
     submitted_forms = db.relationship('Form',
