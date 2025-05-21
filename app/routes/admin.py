@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import func
 from collections import Counter
 from app.utils.email import send_verification_email
+from app.utils.filters import format_indonesian_date
 
 # Inisialisasi blueprint untuk admin
 admin_bp = Blueprint('admin_bp', __name__, template_folder='templates')
@@ -43,6 +44,7 @@ def dashboard():
     rejected_count = len(rejected_forms)
 
     return render_template('parts/admindashboard.html',
+                         format_date=format_indonesian_date,  # Add this line
                          pending_forms=pending_forms,
                          approved_forms=approved_forms,
                          rejected_forms=rejected_forms,
@@ -182,7 +184,7 @@ def verify_payment(form_id):
 def student_detail(form_id):
     if not current_user.is_admin():
         flash('Unauthorized access', 'error')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('index_bp.index'))
         
     form = Form.query.get_or_404(form_id)
     return render_template('parts/student_detail.html', form=form)

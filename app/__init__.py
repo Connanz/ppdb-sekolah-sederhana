@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 import os
+from app.utils.filters import format_indonesian_date
 
 # Inisialisasi Database 
 db = SQLAlchemy()
@@ -53,6 +54,10 @@ def create_app(config_class=Config):
     # Registerasi perintah CLI agar bisa membuat admin di terminal PowerShell
     from .cli import create_admin
     app.cli.add_command(create_admin)
+
+    # Add template filter
+    from app.utils.filters import format_indonesian_date
+    app.jinja_env.filters['indonesian_date'] = format_indonesian_date
 
     with app.app_context():
         from app import models # Harus mempunyai file models.py di folder app

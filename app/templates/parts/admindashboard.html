@@ -133,7 +133,7 @@
                         <td class="px-6 py-4">{{ form.student_name }}</td>
                         <td class="px-6 py-4">{{ form.student_age }}</td>
                         <td class="px-6 py-4">{{ form.school_name }}</td>
-                        <td class="px-6 py-4">{{ form.verification_date.strftime('%d %B %Y') }}</td>
+                        <td class="px-6 py-4">{{ form.verification_date|indonesian_date }}</td>
                         <td class="px-6 py-4">{{ form.verification_note or '-' }}</td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-2">
@@ -187,7 +187,7 @@
                         <td class="px-6 py-4">{{ form.student_name }}</td>
                         <td class="px-6 py-4">{{ form.student_age }}</td>
                         <td class="px-6 py-4">{{ form.school_name }}</td>
-                        <td class="px-6 py-4">{{ form.verification_date.strftime('%d %B %Y') }}</td>
+                        <td class="px-6 py-4">{{ form.verification_date|indonesian_date }}</td>
                         <td class="px-6 py-4">{{ form.verification_note or '-' }}</td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-2">
@@ -347,7 +347,7 @@
                     <tr>
                         <td class="px-6 py-4">{{ form.student_name }}</td>
                         <td class="px-6 py-4">
-                            {{ form.payment_verified_at.strftime('%d %B %Y') if form.payment_verified_at else '-' }}
+                            {{ form.payment_verified_at|indonesian_date }}
                         </td>
                         <td class="px-6 py-4">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -405,7 +405,7 @@
                     <tr>
                         <td class="px-6 py-4">{{ form.student_name }}</td>
                         <td class="px-6 py-4">
-                            {{ form.payment_verified_at.strftime('%d %B %Y') if form.payment_verified_at else '-' }}
+                            {{ form.payment_verified_at|indonesian_date }}
                         </td>
                         <td class="px-6 py-4">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
