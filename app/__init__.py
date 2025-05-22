@@ -19,10 +19,10 @@ def create_app(config_class=Config):
     app.config['PAYMENT_UPLOADS'] = os.path.join(app.root_path, 'static', 'uploads', 'payment_proofs') # Folder yang menampung bukti pembayaran dari user/siswa-siswi
     app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf'} # Jenis file yang diizinkan untuk foto profil dan dokumen
     app.config['ALLOWED_PAYMENT_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}  # Jenis file yang diizinkan untuk bukti pembayaran
-    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # limit yang diberikan hanya 5MB 
+    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # limit yang diberikan pada file diupload hanya 5MB 
     app.config['SECRET_KEY'] = 'mysecret' # Kunci rahasia 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ppdbsekolah.db' # Nama databse yang digunakan berdasarkan bentuk model yang ada di models.py
-    app.config['SQALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQALCHEMY_TRACK_MODIFICATIONS'] = False # Tidak menggunakan fitur mengawasi perubahan secara terus menerus oleh SQLAlchemy
 
     # Inisialisasi ekstensi
     db.init_app(app)
@@ -51,11 +51,11 @@ def create_app(config_class=Config):
     from .routes import register_blueprints
     register_blueprints(app)
 
-    # Registerasi perintah CLI agar bisa membuat admin di terminal PowerShell
+    # Registrasi perintah CLI agar bisa membuat admin di terminal PowerShell
     from .cli import create_admin
     app.cli.add_command(create_admin)
 
-    # Add template filter
+    # Menambahkan template filter
     from app.utils.filters import format_indonesian_date
     app.jinja_env.filters['indonesian_date'] = format_indonesian_date
 

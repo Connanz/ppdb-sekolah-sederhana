@@ -88,8 +88,8 @@ Fitur yang tersedia:
 - Resolusi layar minimal 1024x768
 
 ### File Upload
-- Foto Profil: max 2MB (JPEG/PNG)
-- Dokumen: max 5MB (PDF/JPEG/PNG)
+- Foto Profil: maksimal 2MB (JPEG/PNG)
+- Dokumen: maksimal 5MB (PDF/JPEG/PNG)
 - Bukti Pembayaran: JPEG/PNG
 
 ## FAQ
