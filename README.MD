@@ -2,6 +2,17 @@
 
 Sistem manajemen penerimaan peserta didik baru berbasis web menggunakan Flask dan SQLite.
 
+## Screenshots
+
+### Halaman Utama
+![Halaman Utama](app/static/Documentation%20Images/Screenshots_1.png)
+
+### Dashboard Admin
+![Dashboard Admin](app/static/Documentation%20Images/Screenshots_2.png)
+
+### Laporan Pendaftaran
+![Laporan Statistik](app/static/Documentation%20Images/Screenshots_3.png)
+
 ## Fitur
 
 ### Siswa
@@ -101,6 +112,17 @@ PPDB Sekolah/
 └── run.py
 ```
 
+## Interface Aplikasi
+
+### Halaman Pendaftaran
+![Form Pendaftaran](app/static/Documentation%20Images/Screenshots_4.png)
+
+### Verifikasi Pembayaran
+![Verifikasi Pembayaran](app/static/Documentation%20Images/Screenshots_5.png)
+
+### Dashboard Siswa
+![Dashboard Siswa](app/static/Documentation%20Images/Screenshots_6.png)
+
 ## Konfigurasi
 
 1. Email SMTP di `app/utils/email_config.py`:
@@ -127,9 +149,9 @@ MIT License - Silakan gunakan dan modifikasi sesuai kebutuhan.
 
 ## Kontributor
 
-- [Nama Anda]
-- [Email]
+- [Connanz]
+- [connanztech@gmail.com]
 
 ## Status Proyek
 
-Dalam pengembangan aktif. Silakan buat issue untuk bug report atau feature request.
+Proyek ini dalam pengembangan aktif oleh pengembang. Silakan laporkan bug atau menambahkan permintaan fitur baru.
