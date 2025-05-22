@@ -48,16 +48,31 @@ def pendaftaran():
             doc_path = os.path.join(current_app.config['UPLOAD_FOLDER'], doc_unique_filename)
             document_file.save(doc_path)
 
+            # Get form data
+            student_name = request.form.get('student_name')
+            student_age = request.form.get('student_age')
+            student_email = request.form.get('student_email')
+            school_name = request.form.get('school_name')
+            religion = request.form.get('religion')
+            study_program = request.form.get('study_program')
+
+            # Validasi data wajib
+            if not all([student_name, student_age, student_email, school_name, religion, study_program]):
+                flash('Semua field harus diisi', 'error')
+                return redirect(url_for('form_bp.pendaftaran'))
+
             # Create form submission
             new_form = Form(
                 user_id=current_user.id,
-                student_name=request.form.get('student_name'),
-                student_age=int(request.form.get('student_age')),
-                student_email=request.form.get('student_email'),
-                school_name=request.form.get('school_name'),
+                student_name=student_name,
+                student_age=int(student_age),
+                student_email=student_email,
+                school_name=school_name,
                 image_path=profile_unique_filename,
                 document_path=doc_unique_filename,
-                payment_status='unpaid' 
+                religion=religion,
+                study_program=study_program,
+                payment_status='unpaid'
             )
 
             db.session.add(new_form)

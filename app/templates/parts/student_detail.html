@@ -38,8 +38,44 @@
                 </div>
 
                 <div>
+                    <label class="block text-sm font-medium text-gray-700">Program Studi</label>
+                    <p class="mt-1 text-lg">
+                        {% if form.study_program == 'ilmu_komputer' %}
+                            Ilmu Komputer
+                        {% elif form.study_program == 'manajemen_bisnis' %}
+                            Manajemen Bisnis
+                        {% elif form.study_program == 'teknik_industri' %}
+                            Teknik Industri
+                        {% else %}
+                            {{ form.study_program }}
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div>
                     <label class="block text-sm font-medium text-gray-700">Asal Sekolah</label>
                     <p class="mt-1 text-lg">{{ form.school_name }}</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Agama</label>
+                    <p class="mt-1 text-lg">
+                        {% if form.religion == 'islam' %}
+                            Islam
+                        {% elif form.religion == 'katolik' %}
+                            Katolik
+                        {% elif form.religion == 'kristen_protestan' %}
+                            Kristen Protestan
+                        {% elif form.religion == 'buddha' %}
+                            Buddha
+                        {% elif form.religion == 'hindu' %}
+                            Hindu
+                        {% elif form.religion == 'konghucu' %}
+                            Konghucu
+                        {% else %}
+                            {{ form.religion }}
+                        {% endif %}
+                    </p>
                 </div>
 
                 <div>

@@ -77,7 +77,9 @@ class Form(db.Model):
     payment_verified_at = db.Column(db.DateTime, nullable=True)
     payment_verified_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     payment_note = db.Column(db.Text, nullable=True)
-    
+    religion = db.Column(db.String(50), nullable=False)
+    study_program = db.Column(db.String(50), nullable=False)
+
     # Add relationship for payment verifier
     payment_verifier = db.relationship('User',
         foreign_keys=[payment_verified_by],
@@ -94,7 +96,7 @@ class Form(db.Model):
         db.session.add(notification)
         return notification
 
-# Model Notification yaitu memberikan notifikasi kepada user/siswa-siswi
+# Model Notification yaitu memberikan notifikasi kepada user/peserta didik
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
