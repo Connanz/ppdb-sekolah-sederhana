@@ -57,33 +57,45 @@ Sistem manajemen penerimaan peserta didik baru berbasis web menggunakan Flask da
   <p><em>10. Notifikasi Pembayaran Setelah Mengirimkan Bukti Pembayaran</em></p>
 </div>
 
-### 4. Payment System
+### 4. Halaman Dashboard Siswa
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_11.png" alt="Konfirmasi Pembayaran" width="800"/>
-  <p><em>11. Notifikasi Pembayaran Setelah Mengirimkan Bukti Pembayaran</em></p>
+  <p><em>11. Dashboard Siswa</em></p>
 </div>
 
-### 5. User Management
+### 5. Halaman Dashboard Admin
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_12.png" alt="Detail User" width="800"/>
-  <p><em>12. Detail User</em></p>
+  <p><em>12. Pendaftaran Menunggu Verifikasi</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_13.png" alt="Notifikasi System" width="800"/>
-  <p><em>13. Sistem Notifikasi</em></p>
+  <p><em>13. Pendaftaran Telah Diverifikasi/Diterima</em></p>
 </div>
 
-### 6. Additional Features
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_14.png" alt="Report Generation" width="800"/>
-  <p><em>14. Generasi Laporan</em></p>
+  <p><em>14. Pendaftaran Telah Ditolak</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_15.png" alt="Email Notification" width="800"/>
-  <p><em>15. Notifikasi Email</em></p>
+  <p><em>15. Pembayaran Oleh Siswa Yang Menunggu Verifikasi</em></p>
 </div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_16.png" alt="Email Notification" width="800"/>
+  <p><em>16. Pembayaran Oleh Siswa Yang Diterima</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_17.png" alt="Email Notification" width="800"/>
+  <p><em>17. Pembayaran Oleh Siswa Yang Ditolak</em></p>
+</div>
+
+### 6. Additional Features
+
 
 ## Fitur
 
