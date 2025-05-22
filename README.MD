@@ -2,65 +2,65 @@
 
 Sistem manajemen penerimaan peserta didik baru berbasis web menggunakan Flask dan SQLite.
 
-## Screenshots
+## Cuplikan Layar (Screenshots)
 
-### 1. Landing Page & Main Features
+### 1. Halaman Depan PPDB Sekolah
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_1.png" alt="Halaman Utama" width="800"/>
-  <p><em>1. Halaman Utama PPDB</em></p>
+  <p><em>1. Halaman Utama PPDB Bagian Atas</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_2.png" alt="Dashboard Overview" width="800"/>
-  <p><em>2. Dashboard Overview</em></p>
+  <p><em>2. Halaman Utama PPDB Bagian Bawah</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_3.png" alt="Statistik Pendaftaran" width="800"/>
-  <p><em>3. Statistik Pendaftaran</em></p>
+  <p><em>3. Persyaratan Pendaftaran PPDB</em></p>
 </div>
 
-### 2. Registration Process
+### 2. Proses Registrasi Pengguna
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_4.png" alt="Form Pendaftaran" width="800"/>
-  <p><em>4. Form Pendaftaran Siswa</em></p>
+  <p><em>4. Registrasi Pendaftaran User & Admin</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_5.png" alt="Verifikasi Data" width="800"/>
-  <p><em>5. Verifikasi Data Pendaftaran</em></p>
+  <p><em>5. Masuk Pendaftaran User & Admin</em></p>
 </div>
 
+### 3. Proses Registrasi & Pembayaran Peserta Didik Baru
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_6.png" alt="Dashboard Siswa" width="800"/>
-  <p><em>6. Dashboard Siswa</em></p>
+  <p><em>6. Pendaftaran Siswa Baru</em></p>
 </div>
 
-### 3. Authentication
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_7.png" alt="Login Page" width="800"/>
-  <p><em>7. Halaman Login</em></p>
+  <p><em>7. Status Siswa Setelah Mengirimkan Data Pendaftaran</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_8.png" alt="Register Page" width="800"/>
-  <p><em>8. Halaman Registrasi</em></p>
+  <p><em>8. Halaman Informasi Pembayaran</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_9.png" alt="Status Verifikasi" width="800"/>
-  <p><em>9. Status Verifikasi Akun</em></p>
+  <p><em>9. Halaman Upload Bukti Pembayaran</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_10.png" alt="Form Pembayaran" width="800"/>
+  <p><em>10. Notifikasi Pembayaran Setelah Mengirimkan Bukti Pembayaran</em></p>
 </div>
 
 ### 4. Payment System
 <div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_10.png" alt="Form Pembayaran" width="800"/>
-  <p><em>10. Form Pembayaran</em></p>
-</div>
-
-<div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_11.png" alt="Konfirmasi Pembayaran" width="800"/>
-  <p><em>11. Konfirmasi Pembayaran</em></p>
+  <p><em>11. Notifikasi Pembayaran Setelah Mengirimkan Bukti Pembayaran</em></p>
 </div>
 
 ### 5. User Management
