@@ -4,14 +4,75 @@ Sistem manajemen penerimaan peserta didik baru berbasis web menggunakan Flask da
 
 ## Screenshots
 
-### Halaman Utama
-![Halaman Utama](app/static/Documentation%20Images/Screenshots_1.png)
+### Landing Page & Authentication
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_1.png" alt="Halaman Utama" width="800"/>
+  <p><em>Halaman Utama PPDB</em></p>
+</div>
 
-### Dashboard Admin
-![Dashboard Admin](app/static/Documentation%20Images/Screenshots_2.png)
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_7.png" alt="Login Page" width="800"/>
+  <p><em>Halaman Login</em></p>
+</div>
 
-### Laporan Pendaftaran
-![Laporan Statistik](app/static/Documentation%20Images/Screenshots_3.png)
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_8.png" alt="Register Page" width="800"/>
+  <p><em>Halaman Registrasi</em></p>
+</div>
+
+### Student Interface
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_4.png" alt="Form Pendaftaran" width="800"/>
+  <p><em>Form Pendaftaran Siswa</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_6.png" alt="Dashboard Siswa" width="800"/>
+  <p><em>Dashboard Siswa</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_9.png" alt="Status Pendaftaran" width="800"/>
+  <p><em>Status Pendaftaran</em></p>
+</div>
+
+### Admin Interface
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_2.png" alt="Dashboard Admin" width="800"/>
+  <p><em>Dashboard Admin</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_3.png" alt="Laporan Statistik" width="800"/>
+  <p><em>Laporan dan Statistik Pendaftaran</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_5.png" alt="Verifikasi Pembayaran" width="800"/>
+  <p><em>Verifikasi Pembayaran</em></p>
+</div>
+
+### Payment Process
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_10.png" alt="Upload Pembayaran" width="800"/>
+  <p><em>Form Upload Bukti Pembayaran</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_11.png" alt="Konfirmasi Pembayaran" width="800"/>
+  <p><em>Konfirmasi Pembayaran</em></p>
+</div>
+
+### Additional Features
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_12.png" alt="Detail Siswa" width="800"/>
+  <p><em>Detail Data Siswa</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_13.png" alt="Notifikasi" width="800"/>
+  <p><em>Sistem Notifikasi</em></p>
+</div>
 
 ## Fitur
 
@@ -111,17 +172,6 @@ PPDB Sekolah/
 ├── config.py
 └── run.py
 ```
-
-## Interface Aplikasi
-
-### Halaman Pendaftaran
-![Form Pendaftaran](app/static/Documentation%20Images/Screenshots_4.png)
-
-### Verifikasi Pembayaran
-![Verifikasi Pembayaran](app/static/Documentation%20Images/Screenshots_5.png)
-
-### Dashboard Siswa
-![Dashboard Siswa](app/static/Documentation%20Images/Screenshots_6.png)
 
 ## Konfigurasi
 
