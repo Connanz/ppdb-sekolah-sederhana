@@ -4,74 +4,85 @@ Sistem manajemen penerimaan peserta didik baru berbasis web menggunakan Flask da
 
 ## Screenshots
 
-### Landing Page & Authentication
+### 1. Landing Page & Main Features
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_1.png" alt="Halaman Utama" width="800"/>
-  <p><em>Halaman Utama PPDB</em></p>
+  <p><em>1. Halaman Utama PPDB</em></p>
 </div>
 
 <div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_7.png" alt="Login Page" width="800"/>
-  <p><em>Halaman Login</em></p>
+  <img src="app/static/Documentation%20Images/Screenshots_2.png" alt="Dashboard Overview" width="800"/>
+  <p><em>2. Dashboard Overview</em></p>
 </div>
 
 <div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_8.png" alt="Register Page" width="800"/>
-  <p><em>Halaman Registrasi</em></p>
+  <img src="app/static/Documentation%20Images/Screenshots_3.png" alt="Statistik Pendaftaran" width="800"/>
+  <p><em>3. Statistik Pendaftaran</em></p>
 </div>
 
-### Student Interface
+### 2. Registration Process
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_4.png" alt="Form Pendaftaran" width="800"/>
-  <p><em>Form Pendaftaran Siswa</em></p>
+  <p><em>4. Form Pendaftaran Siswa</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_5.png" alt="Verifikasi Data" width="800"/>
+  <p><em>5. Verifikasi Data Pendaftaran</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_6.png" alt="Dashboard Siswa" width="800"/>
-  <p><em>Dashboard Siswa</em></p>
+  <p><em>6. Dashboard Siswa</em></p>
+</div>
+
+### 3. Authentication
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_7.png" alt="Login Page" width="800"/>
+  <p><em>7. Halaman Login</em></p>
 </div>
 
 <div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_9.png" alt="Status Pendaftaran" width="800"/>
-  <p><em>Status Pendaftaran</em></p>
-</div>
-
-### Admin Interface
-<div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_2.png" alt="Dashboard Admin" width="800"/>
-  <p><em>Dashboard Admin</em></p>
+  <img src="app/static/Documentation%20Images/Screenshots_8.png" alt="Register Page" width="800"/>
+  <p><em>8. Halaman Registrasi</em></p>
 </div>
 
 <div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_3.png" alt="Laporan Statistik" width="800"/>
-  <p><em>Laporan dan Statistik Pendaftaran</em></p>
+  <img src="app/static/Documentation%20Images/Screenshots_9.png" alt="Status Verifikasi" width="800"/>
+  <p><em>9. Status Verifikasi Akun</em></p>
 </div>
 
+### 4. Payment System
 <div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_5.png" alt="Verifikasi Pembayaran" width="800"/>
-  <p><em>Verifikasi Pembayaran</em></p>
-</div>
-
-### Payment Process
-<div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_10.png" alt="Upload Pembayaran" width="800"/>
-  <p><em>Form Upload Bukti Pembayaran</em></p>
+  <img src="app/static/Documentation%20Images/Screenshots_10.png" alt="Form Pembayaran" width="800"/>
+  <p><em>10. Form Pembayaran</em></p>
 </div>
 
 <div align="center">
   <img src="app/static/Documentation%20Images/Screenshots_11.png" alt="Konfirmasi Pembayaran" width="800"/>
-  <p><em>Konfirmasi Pembayaran</em></p>
+  <p><em>11. Konfirmasi Pembayaran</em></p>
 </div>
 
-### Additional Features
+### 5. User Management
 <div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_12.png" alt="Detail Siswa" width="800"/>
-  <p><em>Detail Data Siswa</em></p>
+  <img src="app/static/Documentation%20Images/Screenshots_12.png" alt="Detail User" width="800"/>
+  <p><em>12. Detail User</em></p>
 </div>
 
 <div align="center">
-  <img src="app/static/Documentation%20Images/Screenshots_13.png" alt="Notifikasi" width="800"/>
-  <p><em>Sistem Notifikasi</em></p>
+  <img src="app/static/Documentation%20Images/Screenshots_13.png" alt="Notifikasi System" width="800"/>
+  <p><em>13. Sistem Notifikasi</em></p>
+</div>
+
+### 6. Additional Features
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_14.png" alt="Report Generation" width="800"/>
+  <p><em>14. Generasi Laporan</em></p>
+</div>
+
+<div align="center">
+  <img src="app/static/Documentation%20Images/Screenshots_15.png" alt="Email Notification" width="800"/>
+  <p><em>15. Notifikasi Email</em></p>
 </div>
 
 ## Fitur
